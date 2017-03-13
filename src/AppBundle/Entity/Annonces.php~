@@ -1,0 +1,104 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Annonces
+ *
+ * @ORM\Table(name="annonces")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AnnoncesRepository")
+ */
+class Annonces {
+
+  /**
+   * @var int
+   *
+   * @ORM\Column(name="idAnnonces", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  
+  private $idAnnonces;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="idSite", type="string", length=255)
+   */
+  
+  private $idSite;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="title", type="string", length=255)
+   */
+  
+  private $title;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="description", type="text")
+   */
+  
+  private $description;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="date", type="int", length=11)
+   */
+  
+  private $date;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="ville", type="string", length=255)
+   */
+  
+  private $ville;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="tags", type="string", length=255)
+   */
+  
+  private $tags;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="image", type="string", length=255)
+   */
+  
+  private $image;
+  
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="prix", type="string", length=255)
+   */
+  
+  private $prix;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="url", type="string", length=255)
+   */
+  
+  private $url;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="extraKeywords", type="string", length=255)
+   */
+  
+  private $extraKeywords;
+}
