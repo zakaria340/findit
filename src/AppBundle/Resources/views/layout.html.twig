@@ -1,0 +1,27 @@
+{# src/AppBundle/Resources/views/layout.html.twig #}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Cherchi.ma{% endblock %}</title>
+</head>
+<body>
+
+
+
+
+
+
+
+
+<h4>Bloc Search</h4>
+{{ render(controller("AppBundle:Default:search", app.request.attributes.get('_route_params'))) }}
+
+
+<div id="content" class="col-md-9">
+    {% block body %}
+    {% endblock %}
+</div>
+</body>
+</html>

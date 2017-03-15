@@ -7,20 +7,20 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Tags
  *
- * @ORM\Table(name="tags")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TagsRepository")
+ * @ORM\Table(name="villes")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VillesRepository")
  */
-class Tags {
+class Villes {
 
   /**
    * @var int
    *
-   * @ORM\Column(name="idTags", type="integer")
+   * @ORM\Column(name="idVilles", type="integer")
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="AUTO")
    */
 
-  private $idTags;
+  private $idVilles;
 
   /**
    * @var string
@@ -39,14 +39,15 @@ class Tags {
 
   private $slug;
 
+
     /**
-     * Get idTags
+     * Get idVilles
      *
      * @return integer
      */
-    public function getIdTags()
+    public function getIdVilles()
     {
-        return $this->idTags;
+        return $this->idVilles;
     }
 
     /**
@@ -54,7 +55,7 @@ class Tags {
      *
      * @param string $name
      *
-     * @return Tags
+     * @return Villes
      */
     public function setName($name)
     {
@@ -78,7 +79,7 @@ class Tags {
      *
      * @param string $slug
      *
-     * @return Tags
+     * @return Villes
      */
     public function setSlug($slug)
     {
