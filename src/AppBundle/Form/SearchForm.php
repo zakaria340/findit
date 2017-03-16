@@ -20,7 +20,10 @@ class SearchForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
       $builder
-        ->add('text',     TextType::class, array('required' => false))
+        ->add('text',     TextType::class, array(
+          'required' => false,
+          'label' => '',
+        ))
         ->add('tags', EntityType::class, array(
           'class'        => 'AppBundle:Tags',
           'choice_label' => 'name',
@@ -31,7 +34,9 @@ class SearchForm extends AbstractType
           'choice_label' => 'name',
           'multiple'     => false,
         ))
-        ->add('search', SubmitType::class);
+        ->add('search', SubmitType::class, array(
+          'label' => false,
+        ));
     }
 
 }

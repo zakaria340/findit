@@ -1,51 +1,35 @@
 {# src/OC/PlatformBundle/Resources/views/Advert/form.html.twig #}
 
-<h3>Formulaire d'annonce</h3>
+<div class="search-extra ">
+    <ol class="search-extra-list ">
+        <li id="t-search">
+            {{ form_start(form, {'action': path('homepage'), 'method': 'POST', 'attr': {'class': 'home__search search-form', 'id':'search'}}) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form.search, {'attr': {'class': 'autocomplete__submit'}}) }}
+            <div class="autocomplete">
+                {{ form_widget(form.text, {'attr': {'placeholder': 'Que recherchez-vous ?','class': 'autocomplete__hint', 'id': 'home__hint'}}) }}
+            </div>
+            {{ form_widget(form.villes, {'attr': {'class': 'villes-select select-block-level white-border'}}) }}
+            {{ form_widget(form.tags, {'attr': {'class': 'tags-select select-block-level white-border'}}) }}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </li>
 
-<div class="well">
-    {{ form_start(form, {'action': path('homepage'), 'method': 'POST'}) }}
-    {# Les erreurs générales du formulaire. #}
-    {{ form_errors(form) }}
+    </ol>
+</div>
+<div class="full-tabs group" style="display: none">
+    <ul class="shot-menu full-tabs-links list-orders-items">
 
-    {# Génération manuelle et éclatée : #}
-    <div class="form-group">
-        {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.text) }}
+        <li>Trier Par :</li>
+        <li id="a_1096" class="active">
+            <a class="order-item per-order" data-order="per" href="javascript:void(0)">Pertinence</a>
+        </li>
+        <li id="a_1098">
+            <a class="order-item date-order" data-order="date" href="javascript:void(0)">Les plus récentes</a>
+        </li>
+        <li id="a_1098">
+            <a class="order-item date-order" data-order="prix" href="javascript:void(0)">Prix</a>
+        </li>
+    </ul>
 
-        <div class="col-sm-10">
-            {# Génération de l'input. #}
-            {{ form_widget(form.text, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.tags) }}
-
-        <div class="col-sm-10">
-            {# Génération de l'input. #}
-            {{ form_widget(form.tags, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.villes) }}
-
-        <div class="col-sm-10">
-            {# Génération de l'input. #}
-            {{ form_widget(form.villes, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    </div>
-
-    {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
-    {{ form_widget(form.search, {'attr': {'class': 'btn btn-primary'}}) }}
-
-    {# Génération automatique des champs pas encore écrits.
-       Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
-       et tous les champs cachés (type « hidden »). #}
-    {{ form_rest(form) }}
-
-    {# Fermeture de la balise <form> du formulaire HTML #}
-    {{ form_end(form) }}
 </div>

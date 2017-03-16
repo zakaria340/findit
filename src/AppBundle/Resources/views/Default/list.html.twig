@@ -4,9 +4,63 @@
 {% extends "AppBundle::layout.html.twig" %}
 
 
-{% block title %}{{ parent() }} - Index{% endblock %}
+{% block title %}{{ parent() }} - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
+{% block canonical_rel %}
+    <link rel="canonical" href="http://localhost/cherchima/web/app_dev.php/annonce/casablanca/"/> {% endblock %}
 
 {% block body %}
+    <ol class="group collections ">
+        {% if annonces is not empty %}
+            {% for annonce in annonces %}
+                <li class="group singleAnnonce" id="screenshot-{{ annonce.idAnnonces }}">
+                    <div class="dribbble">
+                        <div class="dribbble-shot">
+                            <div class="dribbble-img">
+                                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                   class="dribbble-link">
+                                    <div data-alt="{{ annonce.title }}" data-picture="">
+                                        <img alt="{{ annonce.title }}"
+                                             src="http://localhost/mytest/mytest/images/3/057cf71d7acaf53dc2efc8a52c618346.jpg">
+                                    </div>
+                                </a>
+                                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                   class="dribbble-over">
+                                    <span class="comment">{{ annonce.description[:150] ~ ' ...' }}</span>
+                                    <em class="timestamp"></em>
+                                </a>
+                            </div>
+                            <div class="collection-thumbs">
+                                <span class="tools-title"> {{ annonce.tags }} / {{ annonce.ville }}</span>
+                                {% for dataItem in annonce.getExtraAnnonces() %}
+                                    <h3>
+                                        {% if dataItem.label is defined %}
+                                            <span>{{ dataItem.label }}</span>
+                                        {% endif %}
+                                        {% if dataItem.value is defined %}
+                                            <span class="meta">{{ dataItem.value }}</span>
+                                        {% endif %}
+                                    </h3>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="attribution hover-card-parent">
+            <span class="attribution-user">
+                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                   class="url hoverable">{{ annonce.title }}</a>
+            </span>
+                        <span class="badge badge-pro">{{ annonce.prix }} DH</span>
+                    </h2>
+                </li>
+            {% endfor %}
+        {% else %}
+            <div class="null null-message">
+                <h2>Aucune annonce trouver.</h2>
+            </div>
+        {% endif %}
+    </ol>
 
-List annonces
+    <div style="clear: both"></div>
+    {% include "AppBundle::pagination.html.twig" %}
+
 {% endblock %}

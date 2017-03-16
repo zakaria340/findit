@@ -1,0 +1,16 @@
+{% if pagination.nbPages > 0 %}
+    <div class="page">
+        <div class="pagination">
+            {% if pagination.page > 1 %}
+                <a href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': pagination.page-1})) }}"
+                   class="previous_page page-numbers">← Prev</a>
+            {% endif %}
+
+            {% if pagination.page < pagination.nbPages %}
+                <a href="{{ path(pagination.nomRoute, pagination.paramsRoute|merge({'page': pagination.page+1})) }}" class="next_page page-numbers">Next
+                    →</a>
+
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

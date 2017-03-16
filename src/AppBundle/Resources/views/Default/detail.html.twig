@@ -1,0 +1,94 @@
+{# src/AppBundle/Resources/views/Default/list.html.twig #}
+
+
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{ annonce.ville }} {{ annonce.title }} {% endblock %}
+{% block canonical_rel %}
+    <link rel="canonical" href="http://localhost/cherchima/web/app_dev.php/annonce/"/> {% endblock %}
+
+{% block body %}
+    <div class="shot-overlay" style="" tabindex="-1">
+        <a href="{{ path('list_annonces', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}" class="close-overlay" aria-label="close"></a>
+        <div class="overlay-content group" style="">
+            <!-- /main -->
+            <div class="slat-header user ">
+                <a href="javascript:void(0)" title="William Kesling" rel="contact" class="url hoverable">
+                    <picture>
+                        <img src="http://localhost/mytest/mytest/images/3/057cf71d7acaf53dc2efc8a52c618346.jpg"
+                             class="photo">
+                    </picture>
+                </a>
+                <a href="javascript:void(0)" title="George Bokhua" rel="contact" class="url hoverable"></a>
+                <h1>{{ annonce.title }} <span class="badge badge-pro">{{ annonce.prix }}</span></h1>
+
+                <h2 class="shot-byline">
+      <span class="attribution ">
+        <span class="shot-byline-user">
+         <a href="javascript:void(0)" class="url hoverable">  {{ annonce.tags }} / {{ annonce.ville }} </a>
+        </span>
+      </span>
+
+        <span class="shot-byline-date">
+           <em class="timestamp"> </em>
+        </span>
+                </h2>
+            </div>
+            <div class="main-shot">
+                <div data-img-src="images/{{ annonce.idSite }}/{{ annonce.image }}"
+                     data-screenshot_id="3306707" class="the-shot">
+                    <div class="single group">
+                        <img src="http://localhost/mytest/mytest/images/3/057cf71d7acaf53dc2efc8a52c618346.jpg"
+                             style="width: 100%; height: 100%">
+                    </div>
+                </div>
+                <div class="screenshot-info-wrapper">
+                    <div class="screenshot-conversation">
+
+                        <div class="shot-desc">
+                            <p>{{ annonce.description }}</p>
+                        </div>
+                    </div>
+
+                    <div class="screenshot-meta   is-team">
+
+                        <ul class="shot-stats">
+                            {% for dataItem in annonce.getExtraAnnonces() %}
+                                <li class="shot-stats-share">
+                                    <a class="stats-action share-shot" href="#">
+                                        <img alt="Icon shotstat share"
+                                             src="https://d13yacurqjgara.cloudfront.net/assets/icon-shotstat-share-128ae71c26985fc7325ac5362aba434686f12fdfffa45ed874262a19f923b071.png">
+                                        <span class="stats-label">{{ dataItem.label }}</span>
+                                    </a>
+                                    <span class="views-count stats-num">
+                                        {{ dataItem.value }}
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="related-player-shots">
+                            <h3 class="meta-head">
+                                <a href="">
+                                    Annonces Similaires :
+                                </a></h3>
+                            <ol class="more-thumbs">
+
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="kbd-legend">
+                <p><a class="form-btn" target="_blank" rel="nofollow" href="{{ annonce.url }}">Aller dans la page
+                        d'annonce</a></p>
+            </div>
+
+            <div class="overlay-footer group">
+            </div>
+            <div class="thedeck loading-dock hide">
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -7,7 +7,61 @@
 {% block title %}{{ parent() }} - Index{% endblock %}
 
 {% block body %}
-
-    Notre plateforme est un peu vide pour le moment, mais cela viendra !
-
+    <div id="main" class="content container main-full searchAnnonces">
+        <div id="c_15" class="trends">
+            <a target="_self" title="Immobiler - Appartement"
+               href="{{ path('list_annonces', {'ville': city, 'tags': 'immobilier'}) }}"
+               class="trends__item trends__item--news">
+              <span>
+                <img src="http://localhost/mytest/mytest/img/immobilier.jpg" alt="">
+                <span class="trends__item__content">
+                  <span class="trends__item__content__icon"></span>
+                  <span class="trends__item__content__title trends__item__content__title--long">
+                    <h2>Immobiler - Appartement</h2>
+                  </span>
+                </span>
+              </span>
+            </a>
+            <a target="_self" title="Voitures occasion"
+               href="{{ path('list_annonces', {'ville': city, 'tags': 'voitures'}) }}"
+               class="trends__item trends__item--news">
+              <span>
+                <img src="http://localhost/mytest/mytest/img/voitures.jpg" alt="">
+                <span class="trends__item__content">
+                  <span class="trends__item__content__icon"></span>
+                  <span class="trends__item__content__title trends__item__content__title--long">
+                    <h2>Voitures occasion</h2>
+                  </span>
+                </span>
+              </span>
+            </a>
+            <a target="_self" title="Informatique - Multimedia"
+               href="{{ path('list_annonces', {'ville': city, 'tags': 'voitures'}) }}"
+               class="trends__item trends__item--news">
+              <span>
+                <img src="http://localhost/mytest/mytest/img/pc.jpg"
+                     alt="">
+                <span class="trends__item__content">
+                  <span class="trends__item__content__icon"></span>
+                  <span class="trends__item__content__title trends__item__content__title--long">
+                    <h2>Informatique - Multimedia</h2>
+                  </span>
+                </span>
+              </span>
+            </a>
+            <a target="_self" title="Offres d'emploi"
+               href="{{ path('list_annonces', {'ville': city, 'tags': 'offres-emploi'}) }}"
+               class="trends__item trends__item--news">
+              <span>
+                <img src="http://localhost/mytest/mytest/img/careers.jpg" alt="">
+                <span class="trends__item__content">
+                  <span class="trends__item__content__icon"></span>
+                  <span class="trends__item__content__title trends__item__content__title--long">
+                    <h2>Offres d'emploi</h2>
+                  </span>
+                </span>
+              </span>
+            </a>
+        </div>
+    </div>
 {% endblock %}

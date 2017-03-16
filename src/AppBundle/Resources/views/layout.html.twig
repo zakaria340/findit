@@ -1,27 +1,53 @@
-{# src/AppBundle/Resources/views/layout.html.twig #}
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+<html amp lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {#<script async src="https://cdn.ampproject.org/v0.js"></script>#}
     <title>{% block title %}Cherchi.ma{% endblock %}</title>
+    {% block canonical_rel %}
+        <link rel="canonical" href="{{ url('homepage') }}"/>{% endblock %}
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    {#
+        <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    #}
+
+    {% block stylesheets %}
+        <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/index2.css') }}" media="all">
+        <link rel="stylesheet" media="screen, projection" href="{{ asset('css/master.css') }}"/>
+        <link rel="stylesheet" media="screen, projection" href="{{ asset('css/infinite.css') }}"/>
+        <link rel="stylesheet" media="screen, projection" href="{{ asset('css/adapt.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/custom2.css') }}" type="text/css"/>
+    {% endblock %}
+
 </head>
 <body>
+<div class="group" id="header">
+    <div class="group" id="header-inner">
+        <div id="logo"><h1><a href="{{ url('homepage') }}">Cherchima</a></h1></div>
+    </div>
+</div>
+
+<div class="search">
+    {{ render(controller("AppBundle:Default:search", app.request.attributes.get('_route_params'))) }}
+</div>
+
+<div id="wrap">
+    <div id="content" class="group">
+
+        <div id="main" class="content container main-full">
+            {% block body %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
 
 
-
-
-
-
-
-
-<h4>Bloc Search</h4>
-{{ render(controller("AppBundle:Default:search", app.request.attributes.get('_route_params'))) }}
-
-
-<div id="content" class="col-md-9">
-    {% block body %}
-    {% endblock %}
+<div id="footer">
+    <div id="footer-inner">
+        <p>Copyright Cherchi.ma Moteur de recherche des annonces au maroc.</p>
+    </div>
 </div>
 </body>
 </html>
