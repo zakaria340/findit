@@ -36,7 +36,7 @@ Class Sphinx {
     $conn = new Connection();
     $conn->setParams(array('host' => '127.0.0.1', 'port' => 9306));
     $this->conxSphinx = $conn;
-    $this->tableSphinx = 'annonces10';
+    $this->tableSphinx = 'annonces11';
   }
 
   /**

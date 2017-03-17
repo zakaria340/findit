@@ -112,7 +112,7 @@ class DefaultController extends Controller {
   public function listAction(Request $request, $ville = '', $tags = '', $keys = '') {
     $page = $request->get('page', 1);
     $conn = $this->getSphinxQLConx();
-    $query = SphinxQL::create($conn)->select('*')->from('annonces10');
+    $query = SphinxQL::create($conn)->select('*')->from('annonces11');
 
     if (!is_null($keys) && $keys != '') {
       $query->match(array('title', 'description', 'tags', 'ville'), $keys);
