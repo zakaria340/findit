@@ -141,14 +141,10 @@ class DefaultController extends Controller {
       'paramsRoute' => array('ville' => $ville, 'tags' => $tags, 'keys' => $keys),
     );
 
-    /*foreach($annonces as $annonce) {
-      var_dump($annonce);die;
+/*    foreach($annonces as $annonce) {
+      var_dump($annonce->getImage());
     }*/
 
-    foreach($annonces as $annonce) {
-      $aaa = 'images/5/1b7301befd1af51a6bb87a66c0141335.jpg';
-      var_dump($this->container->get('assets.packages')->getUrl($aaa));
-    }
     return $this->render(
       'AppBundle:Default:list.html.twig', array(
         'annonces'   => $annonces,

@@ -20,7 +20,7 @@
                                    class="dribbble-link">
                                     <div data-alt="{{ annonce.title }}" data-picture="">
                                         <img alt="{{ annonce.title }}"
-                                             src="http://localhost/mytest/mytest/images/3/057cf71d7acaf53dc2efc8a52c618346.jpg">
+                                             src="{{ asset(annonce.image) }}">
                                     </div>
                                 </a>
                                 <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
