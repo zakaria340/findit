@@ -12,3 +12,13 @@ services:
         public: true
         tags:
             - { name: twig.extension }
+
+    appbundle.crawl:
+        class: AppBundle\Providers\Crawl
+        arguments:
+                ["@doctrine.orm.entity_manager", "@appbundle.sphinx"]
+
+    appbundle.sphinx:
+        class: AppBundle\Sphinx\Sphinx
+        arguments:
+                ["@doctrine.orm.entity_manager", '%kernel.root_dir%']

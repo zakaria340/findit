@@ -16,10 +16,10 @@ class DefaultController extends Controller {
   public function indexAction(Request $request) {
 
     $ip = "92.3.2.10";//$_SERVER['REMOTE_ADDR'] $this->get_real_ip();
-    $query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
+    $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
 
     $city = 'casablanca';
-    if($query && $query['status'] == 'success') {
+    if ($query && $query['status'] == 'success') {
       //$city = $this->clean($query['city']);
     }
     $searchForm = $this->createForm(SearchForm::class);
@@ -92,7 +92,7 @@ class DefaultController extends Controller {
   public function detailAction($ville = '', $idannonce = '', $title = '') {
     $em = $this->getDoctrine()->getManager();
     $annonce = $em->getRepository('AppBundle:Annonces')->find($idannonce);
-    if(!$annonce) {
+    if (!$annonce) {
       return $this->redirect($this->generateUrl('homepage'));
     }
 
@@ -110,11 +110,9 @@ class DefaultController extends Controller {
    * )
    */
   public function listAction(Request $request, $ville = '', $tags = '', $keys = '') {
-
     $page = $request->get('page', 1);
-
-      $conn = $this->getSphinxQLConx();
-   $query = SphinxQL::create($conn)->select('*')->from('annonces10');
+    $conn = $this->getSphinxQLConx();
+    $query = SphinxQL::create($conn)->select('*')->from('annonces10');
 
     if (!is_null($keys) && $keys != '') {
       $query->match(array('title', 'description', 'tags', 'ville'), $keys);
@@ -126,8 +124,8 @@ class DefaultController extends Controller {
       //$query->match(array('tags'), $tags);
     }
 
-   $query->limit(100000000);
-   $result = $query->execute();
+    $query->limit(100000000);
+    $result = $query->execute();
     $ids_count = array();
     foreach ($result as $item) {
       $ids_count[] = $item['id'];
@@ -146,6 +144,11 @@ class DefaultController extends Controller {
     /*foreach($annonces as $annonce) {
       var_dump($annonce);die;
     }*/
+
+    foreach($annonces as $annonce) {
+      $aaa = 'images/5/1b7301befd1af51a6bb87a66c0141335.jpg';
+      var_dump($this->container->get('assets.packages')->getUrl($aaa));
+    }
     return $this->render(
       'AppBundle:Default:list.html.twig', array(
         'annonces'   => $annonces,
@@ -166,8 +169,432 @@ class DefaultController extends Controller {
   }
 
   public function clean($string) {
-    $a = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', 'Ā', 'ā', 'Ă', 'ă', 'Ą', 'ą', 'Ć', 'ć', 'Ĉ', 'ĉ', 'Ċ', 'ċ', 'Č', 'č', 'Ď', 'ď', 'Đ', 'đ', 'Ē', 'ē', 'Ĕ', 'ĕ', 'Ė', 'ė', 'Ę', 'ę', 'Ě', 'ě', 'Ĝ', 'ĝ', 'Ğ', 'ğ', 'Ġ', 'ġ', 'Ģ', 'ģ', 'Ĥ', 'ĥ', 'Ħ', 'ħ', 'Ĩ', 'ĩ', 'Ī', 'ī', 'Ĭ', 'ĭ', 'Į', 'į', 'İ', 'ı', 'Ĳ', 'ĳ', 'Ĵ', 'ĵ', 'Ķ', 'ķ', 'Ĺ', 'ĺ', 'Ļ', 'ļ', 'Ľ', 'ľ', 'Ŀ', 'ŀ', 'Ł', 'ł', 'Ń', 'ń', 'Ņ', 'ņ', 'Ň', 'ň', 'ŉ', 'Ō', 'ō', 'Ŏ', 'ŏ', 'Ő', 'ő', 'Œ', 'œ', 'Ŕ', 'ŕ', 'Ŗ', 'ŗ', 'Ř', 'ř', 'Ś', 'ś', 'Ŝ', 'ŝ', 'Ş', 'ş', 'Š', 'š', 'Ţ', 'ţ', 'Ť', 'ť', 'Ŧ', 'ŧ', 'Ũ', 'ũ', 'Ū', 'ū', 'Ŭ', 'ŭ', 'Ů', 'ů', 'Ű', 'ű', 'Ų', 'ų', 'Ŵ', 'ŵ', 'Ŷ', 'ŷ', 'Ÿ', 'Ź', 'ź', 'Ż', 'ż', 'Ž', 'ž', 'ſ', 'ƒ', 'Ơ', 'ơ', 'Ư', 'ư', 'Ǎ', 'ǎ', 'Ǐ', 'ǐ', 'Ǒ', 'ǒ', 'Ǔ', 'ǔ', 'Ǖ', 'ǖ', 'Ǘ', 'ǘ', 'Ǚ', 'ǚ', 'Ǜ', 'ǜ', 'Ǻ', 'ǻ', 'Ǽ', 'ǽ', 'Ǿ', 'ǿ');
-    $b = array('A', 'A', 'A', 'A', 'A', 'A', 'AE', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'D', 'N', 'O', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 's', 'a', 'a', 'a', 'a', 'a', 'a', 'ae', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'n', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'A', 'a', 'A', 'a', 'A', 'a', 'C', 'c', 'C', 'c', 'C', 'c', 'C', 'c', 'D', 'd', 'D', 'd', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'E', 'e', 'G', 'g', 'G', 'g', 'G', 'g', 'G', 'g', 'H', 'h', 'H', 'h', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'I', 'i', 'IJ', 'ij', 'J', 'j', 'K', 'k', 'L', 'l', 'L', 'l', 'L', 'l', 'L', 'l', 'l', 'l', 'N', 'n', 'N', 'n', 'N', 'n', 'n', 'O', 'o', 'O', 'o', 'O', 'o', 'OE', 'oe', 'R', 'r', 'R', 'r', 'R', 'r', 'S', 's', 'S', 's', 'S', 's', 'S', 's', 'T', 't', 'T', 't', 'T', 't', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'W', 'w', 'Y', 'y', 'Y', 'Z', 'z', 'Z', 'z', 'Z', 'z', 's', 'f', 'O', 'o', 'U', 'u', 'A', 'a', 'I', 'i', 'O', 'o', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'U', 'u', 'A', 'a', 'AE', 'ae', 'O', 'o');
+    $a = array(
+      'À',
+      'Á',
+      'Â',
+      'Ã',
+      'Ä',
+      'Å',
+      'Æ',
+      'Ç',
+      'È',
+      'É',
+      'Ê',
+      'Ë',
+      'Ì',
+      'Í',
+      'Î',
+      'Ï',
+      'Ð',
+      'Ñ',
+      'Ò',
+      'Ó',
+      'Ô',
+      'Õ',
+      'Ö',
+      'Ø',
+      'Ù',
+      'Ú',
+      'Û',
+      'Ü',
+      'Ý',
+      'ß',
+      'à',
+      'á',
+      'â',
+      'ã',
+      'ä',
+      'å',
+      'æ',
+      'ç',
+      'è',
+      'é',
+      'ê',
+      'ë',
+      'ì',
+      'í',
+      'î',
+      'ï',
+      'ñ',
+      'ò',
+      'ó',
+      'ô',
+      'õ',
+      'ö',
+      'ø',
+      'ù',
+      'ú',
+      'û',
+      'ü',
+      'ý',
+      'ÿ',
+      'Ā',
+      'ā',
+      'Ă',
+      'ă',
+      'Ą',
+      'ą',
+      'Ć',
+      'ć',
+      'Ĉ',
+      'ĉ',
+      'Ċ',
+      'ċ',
+      'Č',
+      'č',
+      'Ď',
+      'ď',
+      'Đ',
+      'đ',
+      'Ē',
+      'ē',
+      'Ĕ',
+      'ĕ',
+      'Ė',
+      'ė',
+      'Ę',
+      'ę',
+      'Ě',
+      'ě',
+      'Ĝ',
+      'ĝ',
+      'Ğ',
+      'ğ',
+      'Ġ',
+      'ġ',
+      'Ģ',
+      'ģ',
+      'Ĥ',
+      'ĥ',
+      'Ħ',
+      'ħ',
+      'Ĩ',
+      'ĩ',
+      'Ī',
+      'ī',
+      'Ĭ',
+      'ĭ',
+      'Į',
+      'į',
+      'İ',
+      'ı',
+      'Ĳ',
+      'ĳ',
+      'Ĵ',
+      'ĵ',
+      'Ķ',
+      'ķ',
+      'Ĺ',
+      'ĺ',
+      'Ļ',
+      'ļ',
+      'Ľ',
+      'ľ',
+      'Ŀ',
+      'ŀ',
+      'Ł',
+      'ł',
+      'Ń',
+      'ń',
+      'Ņ',
+      'ņ',
+      'Ň',
+      'ň',
+      'ŉ',
+      'Ō',
+      'ō',
+      'Ŏ',
+      'ŏ',
+      'Ő',
+      'ő',
+      'Œ',
+      'œ',
+      'Ŕ',
+      'ŕ',
+      'Ŗ',
+      'ŗ',
+      'Ř',
+      'ř',
+      'Ś',
+      'ś',
+      'Ŝ',
+      'ŝ',
+      'Ş',
+      'ş',
+      'Š',
+      'š',
+      'Ţ',
+      'ţ',
+      'Ť',
+      'ť',
+      'Ŧ',
+      'ŧ',
+      'Ũ',
+      'ũ',
+      'Ū',
+      'ū',
+      'Ŭ',
+      'ŭ',
+      'Ů',
+      'ů',
+      'Ű',
+      'ű',
+      'Ų',
+      'ų',
+      'Ŵ',
+      'ŵ',
+      'Ŷ',
+      'ŷ',
+      'Ÿ',
+      'Ź',
+      'ź',
+      'Ż',
+      'ż',
+      'Ž',
+      'ž',
+      'ſ',
+      'ƒ',
+      'Ơ',
+      'ơ',
+      'Ư',
+      'ư',
+      'Ǎ',
+      'ǎ',
+      'Ǐ',
+      'ǐ',
+      'Ǒ',
+      'ǒ',
+      'Ǔ',
+      'ǔ',
+      'Ǖ',
+      'ǖ',
+      'Ǘ',
+      'ǘ',
+      'Ǚ',
+      'ǚ',
+      'Ǜ',
+      'ǜ',
+      'Ǻ',
+      'ǻ',
+      'Ǽ',
+      'ǽ',
+      'Ǿ',
+      'ǿ',
+    );
+    $b = array(
+      'A',
+      'A',
+      'A',
+      'A',
+      'A',
+      'A',
+      'AE',
+      'C',
+      'E',
+      'E',
+      'E',
+      'E',
+      'I',
+      'I',
+      'I',
+      'I',
+      'D',
+      'N',
+      'O',
+      'O',
+      'O',
+      'O',
+      'O',
+      'O',
+      'U',
+      'U',
+      'U',
+      'U',
+      'Y',
+      's',
+      'a',
+      'a',
+      'a',
+      'a',
+      'a',
+      'a',
+      'ae',
+      'c',
+      'e',
+      'e',
+      'e',
+      'e',
+      'i',
+      'i',
+      'i',
+      'i',
+      'n',
+      'o',
+      'o',
+      'o',
+      'o',
+      'o',
+      'o',
+      'u',
+      'u',
+      'u',
+      'u',
+      'y',
+      'y',
+      'A',
+      'a',
+      'A',
+      'a',
+      'A',
+      'a',
+      'C',
+      'c',
+      'C',
+      'c',
+      'C',
+      'c',
+      'C',
+      'c',
+      'D',
+      'd',
+      'D',
+      'd',
+      'E',
+      'e',
+      'E',
+      'e',
+      'E',
+      'e',
+      'E',
+      'e',
+      'E',
+      'e',
+      'G',
+      'g',
+      'G',
+      'g',
+      'G',
+      'g',
+      'G',
+      'g',
+      'H',
+      'h',
+      'H',
+      'h',
+      'I',
+      'i',
+      'I',
+      'i',
+      'I',
+      'i',
+      'I',
+      'i',
+      'I',
+      'i',
+      'IJ',
+      'ij',
+      'J',
+      'j',
+      'K',
+      'k',
+      'L',
+      'l',
+      'L',
+      'l',
+      'L',
+      'l',
+      'L',
+      'l',
+      'l',
+      'l',
+      'N',
+      'n',
+      'N',
+      'n',
+      'N',
+      'n',
+      'n',
+      'O',
+      'o',
+      'O',
+      'o',
+      'O',
+      'o',
+      'OE',
+      'oe',
+      'R',
+      'r',
+      'R',
+      'r',
+      'R',
+      'r',
+      'S',
+      's',
+      'S',
+      's',
+      'S',
+      's',
+      'S',
+      's',
+      'T',
+      't',
+      'T',
+      't',
+      'T',
+      't',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'W',
+      'w',
+      'Y',
+      'y',
+      'Y',
+      'Z',
+      'z',
+      'Z',
+      'z',
+      'Z',
+      'z',
+      's',
+      'f',
+      'O',
+      'o',
+      'U',
+      'u',
+      'A',
+      'a',
+      'I',
+      'i',
+      'O',
+      'o',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'U',
+      'u',
+      'A',
+      'a',
+      'AE',
+      'ae',
+      'O',
+      'o',
+    );
     $string = str_replace($a, $b, $string);
     $string = strtolower($string);
     $string = addslashes($string);
@@ -175,31 +602,24 @@ class DefaultController extends Controller {
     return $string;
   }
 
-  public function get_real_ip()
-  {
+  public function get_real_ip() {
 
-    if (isset($_SERVER["HTTP_CLIENT_IP"]))
-    {
+    if (isset($_SERVER["HTTP_CLIENT_IP"])) {
       return $_SERVER["HTTP_CLIENT_IP"];
     }
-    elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-    {
+    elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
       return $_SERVER["HTTP_X_FORWARDED_FOR"];
     }
-    elseif (isset($_SERVER["HTTP_X_FORWARDED"]))
-    {
+    elseif (isset($_SERVER["HTTP_X_FORWARDED"])) {
       return $_SERVER["HTTP_X_FORWARDED"];
     }
-    elseif (isset($_SERVER["HTTP_FORWARDED_FOR"]))
-    {
+    elseif (isset($_SERVER["HTTP_FORWARDED_FOR"])) {
       return $_SERVER["HTTP_FORWARDED_FOR"];
     }
-    elseif (isset($_SERVER["HTTP_FORWARDED"]))
-    {
+    elseif (isset($_SERVER["HTTP_FORWARDED"])) {
       return $_SERVER["HTTP_FORWARDED"];
     }
-    else
-    {
+    else {
       return $_SERVER["REMOTE_ADDR"];
     }
   }
