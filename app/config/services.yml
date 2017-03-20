@@ -12,6 +12,8 @@ services:
         public: true
         tags:
             - { name: twig.extension }
+        arguments:
+                ["@doctrine.orm.entity_manager"]
 
     appbundle.crawl:
         class: AppBundle\Providers\Crawl

@@ -223,3 +223,8 @@ ol.dribbbles li div.dribbble a.dribbble-over, ol.collections li div.dribbble a.d
 ol.dribbbles li h2 span.badge, ol.collections li h2 span.badge, ol.dribbbles li h2 span.badge-sale, ol.collections li h2 span.badge-sale {
     opacity: 2 !important;
 }
+
+img.logosite {
+    width: 30px;
+    height: 30px;
+}

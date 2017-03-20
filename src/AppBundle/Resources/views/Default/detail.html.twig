@@ -3,7 +3,7 @@
 
 {% extends "AppBundle::layout.html.twig" %}
 
-{% block title %}{{ parent() }} - {{ annonce.ville }} {{ annonce.title }} {% endblock %}
+{% block title %}Cherchi.ma - {{ annonce.ville }} {{ annonce.title }} {% endblock %}
 {% block canonical_rel %}
     <link rel="canonical" href="http://localhost/cherchima/web/app_dev.php/annonce/"/> {% endblock %}
 
@@ -13,14 +13,12 @@
         <div class="overlay-content group" style="">
             <!-- /main -->
             <div class="slat-header user ">
-                <a href="javascript:void(0)" title="William Kesling" rel="contact" class="url hoverable">
                     <picture>
-                        <img src="http://localhost/mytest/mytest/images/3/057cf71d7acaf53dc2efc8a52c618346.jpg"
+                        <img title="Site {{annonce.idSite|SiteInfos.name }}" src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}"
                              class="photo">
                     </picture>
-                </a>
                 <a href="javascript:void(0)" title="George Bokhua" rel="contact" class="url hoverable"></a>
-                <h1>{{ annonce.title }} <span class="badge badge-pro">{{ annonce.prix }}</span></h1>
+                <h1>{{ annonce.title }} <span class="badge badge-pro">{{ annonce.prix }} DH </span></h1>
 
                 <h2 class="shot-byline">
       <span class="attribution ">
@@ -36,9 +34,9 @@
             </div>
             <div class="main-shot">
                 <div data-img-src="images/{{ annonce.idSite }}/{{ annonce.image }}"
-                     data-screenshot_id="3306707" class="the-shot">
+                     data-screenshot_id="{{ annonce.idAnnonces }}" class="the-shot">
                     <div class="single group">
-                        <img src="http://localhost/mytest/mytest/images/3/057cf71d7acaf53dc2efc8a52c618346.jpg"
+                        <img src="{{ asset(annonce.image) }}"
                              style="width: 100%; height: 100%">
                     </div>
                 </div>

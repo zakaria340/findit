@@ -96,20 +96,19 @@ Class Sphinx {
    *
    * @return int
    */
-  public function getVille($ville) {
-    $cleanString = $this->clean($ville);
-    $ville = $this->em->getRepository('AppBundle:Villes')->findOneBy(array('slug' => $cleanString));
-
-    if (!$ville) {
+  public function getVille($villeString) {
+    $cleanString = $this->clean($villeString);
+    $villeEntity = $this->em->getRepository('AppBundle:Villes')->findOneBy(array('slug' => $cleanString));
+    if (is_null($villeEntity)) {
       $ville = new Villes();
-      $ville->setName($ville);
+      $ville->setName($villeString);
       $ville->setSlug($cleanString);
       $this->em->persist($ville);
       $this->em->flush();
       return $ville->getIdVilles();
     }
 
-    return $ville->getIdVilles();
+    return $villeEntity->getIdVilles();
   }
 
 

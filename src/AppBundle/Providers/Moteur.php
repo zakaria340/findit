@@ -24,12 +24,20 @@ Class Moteur {
       return array();
     }
     
-    
     $html = HtmlDomParser::file_get_html($url);
     $dataToSave = array();
 
     if ($html && $html->find('h1 .text_bold', 0)) {
       $prix = $image = $title = $urlAnnonces = '';
+      if ($html->find('#gallery-wrapper a img', 0)) {
+        $image = trim($html->find('#gallery-wrapper a img', 0)->src);
+      }
+      if ($image != '') {
+        $imageUnique = md5(time() . 3 . $annonceID) . '.jpg';
+        $pathNewImage = $this->sphinx->resizeandsave($image, $data->getIdSites(), $imageUnique);
+      } else {
+        return array();
+      }
       $title = $html->find('h1 .text_bold', 0)->plaintext;
       $title = strip_tags($title);
       $title = trim($title);
@@ -71,12 +79,7 @@ Class Moteur {
 
       array_pop($extraKeywords);
       array_pop($extraKeywords);
-      if ($image != '') {
-        $imageUnique = md5(time() . 3 . $annonceID) . '.jpg';
-        $pathNewImage = $this->sphinx->resizeandsave($image, $data->getIdSites(), $imageUnique);
-      } else {
-        $pathNewImage = '';
-      }
+  
 
       $dataToSave = array(
         'idSphinx' => $data->getPrefix() . $annonceID,
@@ -97,6 +100,9 @@ Class Moteur {
     return $dataToSave;
   }
 
+  /**
+   * @param int $nbr
+   */
   public function fetchALLAnnonces($nbr = 2) {
     $site = $this->em->getRepository('AppBundle:Sites')->find(5);
 

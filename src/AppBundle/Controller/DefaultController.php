@@ -121,7 +121,7 @@ class DefaultController extends Controller {
       $query->match(array('ville'), $ville);
     }
     if (!is_null($tags)) {
-      //$query->match(array('tags'), $tags);
+      $query->match(array('tags'), $tags);
     }
 
     $query->limit(100000000);
@@ -149,7 +149,7 @@ class DefaultController extends Controller {
       'AppBundle:Default:list.html.twig', array(
         'annonces'   => $annonces,
         'pagination' => $pagination,
-        'arguments'  => array('ville' => $ville, 'tags' => $tags, 'keys' => $keys),
+        'arguments'  => array('ville' => str_replace('-', ' ', $ville), 'tags' => str_replace('-', ' ', $tags), 'keys' => str_replace('-', ' ', $keys)),
       )
     );
   }

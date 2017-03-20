@@ -4,11 +4,19 @@
 {% extends "AppBundle::layout.html.twig" %}
 
 
-{% block title %}{{ parent() }} - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
+{% block title %}Cherche.ma - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
 {% block canonical_rel %}
-    <link rel="canonical" href="http://localhost/cherchima/web/app_dev.php/annonce/casablanca/"/> {% endblock %}
+    <link rel="canonical" href="{{ url('list_annonces', arguments) }}"/> {% endblock %}
 
 {% block body %}
+    {% if annonces is not empty %}
+        <div class="full-tabs">
+            <ul class="shot-menu full-tabs-links">
+                <li><h2>Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
+                        Prix {{ arguments.ville }} Maroc</h2></li>
+            </ul>
+        </div>
+    {% endif %}
     <ol class="group collections ">
         {% if annonces is not empty %}
             {% for annonce in annonces %}
@@ -46,8 +54,10 @@
                     </div>
                     <h2 class="attribution hover-card-parent">
             <span class="attribution-user">
+                <img title="Site {{ annonce.idSite|SiteInfos.name }}"
+                     src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite">
                 <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
-                   class="url hoverable">{{ annonce.title }}</a>
+                   class="url hoverable">{{ annonce.title }}  </a>
             </span>
                         <span class="badge badge-pro">{{ annonce.prix }} DH</span>
                     </h2>
