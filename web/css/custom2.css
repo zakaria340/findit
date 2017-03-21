@@ -228,3 +228,32 @@ img.logosite {
     width: 30px;
     height: 30px;
 }
+
+.singleAnnonce {
+  padding-top: 20px !important;
+}
+
+.hoverable span {
+    box-sizing: border-box;
+    color: #999;
+    display: block;
+    font-size: 13px;
+    text-transform: lowercase;
+}
+
+ol.more-thumbs li {
+    max-height: 108px;
+}
+
+.randomAnnonces {
+    width: 65%;
+}
+.randomAnnonces {
+    margin: 12px auto 40px;
+    max-width: 1000px;
+    width: 80%;
+}
+
+.search-extra-list  h2 {
+    font-size: 16px;
+}

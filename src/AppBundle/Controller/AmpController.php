@@ -8,13 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Foolz\SphinxQL\SphinxQL;
 use Foolz\SphinxQL\Connection;
+use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller {
+class AmpController extends Controller {
   /**
-   * @Route("/", name="homepage")
+   * @Route("/amp", name="homepageamp")
    */
-  public function indexAction(Request $request) {
-
+  public function indexampAction(Request $request) {
     $ip = "92.3.2.10";//$_SERVER['REMOTE_ADDR'] $this->get_real_ip();
     $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
 
@@ -33,24 +33,19 @@ class DefaultController extends Controller {
         'tags'  => !is_null($data['tags']) ? str_replace(' ', '-', $data['tags']->getSlug()) : 'tous',
         'keys'  => str_replace(' ', '-', $data['text']),
       );
-      return $this->redirect($this->generateUrl('list_annonces', $params));
+      $response = $this->redirectToRoute('list_annonces', $params);
+      return $response;
     }
-
-    $em = $this->getDoctrine()->getManager();
-    $randomAnnonces = $em->getRepository('AppBundle:Annonces')->RandomAnnonces($city);
-
     return $this->render(
-      'AppBundle:Default:index.html.twig', array(
+      'AppBundle:Amp:indexamp.html.twig', array(
         'form' => $searchForm->createView(),
         'city' => $city,
-        'randomAnnonces' => $randomAnnonces
       )
     );
 
   }
 
-
-  public function searchAction(Request $request, $ville = '', $tags = '', $keys = '') {
+  public function searchampAction(Request $request, $ville = '', $tags = '', $keys = '') {
     $form = $this->createForm(SearchForm::class);
 
     /**
@@ -78,7 +73,7 @@ class DefaultController extends Controller {
     }
 
     return $this->render(
-      'AppBundle:Default:search.html.twig', array(
+      'AppBundle:Amp:searchamp.html.twig', array(
         'form' => $form->createView(),
       )
     );
@@ -99,19 +94,18 @@ class DefaultController extends Controller {
     if (!$annonce) {
       return $this->redirect($this->generateUrl('homepage'));
     }
-    $annoncesSimilar = $em->getRepository('AppBundle:Annonces')->findAllSimilar($ville, $annonce->getTags());
+
     return $this->render(
       'AppBundle:Default:detail.html.twig', array(
         'annonce' => $annonce,
-        'annoncesSimilar' => $annoncesSimilar
       )
     );
   }
 
   /**
    * @Route(
-   *     "/annonces/{ville}/{tags}/{keys}",
-   *     name="list_annonces",
+   *     "/amp/annonces/{ville}/{tags}/{keys}",
+   *     name="list_annoncesamp",
    * )
    */
   public function listAction(Request $request, $ville = 'tous', $tags = 'tous', $keys = '') {
@@ -135,7 +129,7 @@ class DefaultController extends Controller {
     foreach ($result as $item) {
       $ids_count[] = $item['id'];
     }
-    $nbArticlesParPage = 25;
+    $nbArticlesParPage = 10;
     $em = $this->getDoctrine()->getManager();
     $annonces = $em->getRepository('AppBundle:Annonces')->findAllPagineEtTrie($page, $nbArticlesParPage, $ids_count);
 
@@ -146,8 +140,11 @@ class DefaultController extends Controller {
       'paramsRoute' => array('ville' => $ville, 'tags' => $tags, 'keys' => $keys),
     );
 
+    /*    foreach($annonces as $annonce) {
+          var_dump($annonce->getImage());
+        }*/
     return $this->render(
-      'AppBundle:Default:list.html.twig', array(
+      'AppBundle:Amp:listamp.html.twig', array(
         'annonces'   => $annonces,
         'pagination' => $pagination,
         'arguments'  => array(
@@ -155,7 +152,6 @@ class DefaultController extends Controller {
           'tags'  => str_replace('-', ' ', $tags),
           'keys'  => str_replace('-', ' ', $keys),
         ),
-        'countAnnonces' => $annonces->count()
       )
     );
   }

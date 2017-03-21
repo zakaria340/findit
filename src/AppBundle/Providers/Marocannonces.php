@@ -1,12 +1,17 @@
 <?php
+namespace AppBundle\Providers;
+
+use Sunra\PhpSimple\HtmlDomParser;
 
 Class Marocannonces {
 
-  public $_baseUrl = 'http://www.marocannonces.com/categorie/397/Location-vacances/annonce/';
-  public $_db;
+  public $_baseUrl = 'https://www.marocannonces.com/categorie/397/Location-vacances/annonce/';
+  protected $em;
+  protected $sphinx;
 
-  public function __construct($db) {
-    $this->_db = $db;
+  public function __construct($em, $sphinx) {
+    $this->em = $em;
+    $this->sphinx = $sphinx;
   }
 
   public function getData($url, $data) {
@@ -17,22 +22,21 @@ Class Marocannonces {
     if (!empty($matches[0])) {
       $annonceID = $matches[1][0];
     }
-    $header = get_headers($url, 1);
-    if ($header[0] == 'HTTP/1.1 200 OK') {
-      $html = file_get_html($url);
-    } else {
-      $html = false;
-    }
-
     /**
      * Check if Annonce exist.
      */
-    $sphinx = new Sphinx($this->_db);
-    $d = $sphinx->checkAnnoncebyUrl($url);
+    $d = $this->sphinx->checkAnnoncebyUrl($url);
     if (!empty($d)) {
       return array();
     }
 
+    $header = get_headers($url, 1);
+    if ($header[0] == 'HTTP/1.1 200 OK') {
+      $html = HtmlDomParser::file_get_html($url);
+    }
+    else {
+      $html = FALSE;
+    }
 
     $dataToSave = array();
     if ($html && $html->find('.description h1', 0)) {
@@ -47,6 +51,14 @@ Class Marocannonces {
         $image = trim($html->find('meta[property=og:image]', 0)->content);
         $image = str_replace('cdn.', '', $image);
       }
+
+      if ($image && $image != '') {
+        $imageUnique = md5(time() . $data->getIdSites() . $annonceID) . '.jpg';
+        $pathNewImage = $this->sphinx->resizeandsave($image, $data->getIdSites(), $imageUnique);
+      }
+      else {
+        return array();
+      }
       foreach ($html->find('#bloc-advsearch-top select[name=cat] option') as $checkbox) {
         if ($checkbox->selected) {
           $categorie1 = $checkbox->plaintext;
@@ -59,14 +71,8 @@ Class Marocannonces {
       }
 
       $ville = trim($html->find('.description ul.info-holder li', 0)->plaintext);
-      $idVille = Utilities::getVille($ville);
-      $tags = Utilities::getTags(array($categorie1));
-
-      if ($image && $image != '') {
-        $imageUnique = Utilities::resizeandsave($image, $data['idSites']);
-      } else {
-        $imageUnique = '';
-      }
+      $idVille = $this->sphinx->getVille($ville);
+      $tags = $this->sphinx->getTags(array($categorie1));
 
       $extraKeywords = array();
       foreach ($html->find('#extra_questions li') as $li) {
@@ -75,37 +81,39 @@ Class Marocannonces {
       }
 
       $dataToSave = array(
-        'idSphinx' => $data['prefix'] . $annonceID,
-        'idAnnonce' => $annonceID,
-        'idSite' => $data['idSites'],
-        'title' => trim($title),
-        'description' => trim($description),
-        'date' => $date,
-        'ville' => array($idVille => $ville),
-        'tags' => $tags,
-        'image' => $imageUnique,
-        'prix' => (string) $prix,
-        'url' => $url,
-        'extraKeywords' => $extraKeywords
+        'idSphinx'      => $data->getPrefix() . $annonceID,
+        'idAnnonce'     => $annonceID,
+        'idSite'        => $data->getIdSites(),
+        'title'         => trim($title),
+        'description'   => trim($description),
+        'date'          => $date,
+        'ville'         => array($idVille => $ville),
+        'tags'          => $tags,
+        'image'         => $pathNewImage,
+        'prix'          => (string) $prix,
+        'url'           => $url,
+        'extraKeywords' => $extraKeywords,
       );
     }
     return $dataToSave;
   }
 
-  public function fetchALLAnnonces($nbr) {
-    $sitesTable = new \Zend\Db\TableGateway\TableGateway('sites', $this->_db);
-    $sphinx = new Sphinx($this->_db);
-    $rowset = $sitesTable->select(array('idSites' => 2));
-    $data = $rowset->current();
-    for ($i = 2; $i <= 3; $i++) {
-      $listpagehtml = file_get_html('http://www.marocannonces.com/maroc.html?image=on&pge=' . $i);
+  public function fetchALLAnnonces($nbr = 2) {
+    $site = $this->em->getRepository('AppBundle:Sites')->find(2);
+    for ($i = 1; $i <= $nbr; $i++) {
+      $listpagehtml = HtmlDomParser::file_get_html('https://www.marocannonces.com/maroc.html?image=on&pge=' . $i);
+
       foreach ($listpagehtml->find('#content .cars-list li') as $item) {
-        $link = 'http://www.marocannonces.com/' . $item->find('a', 0)->href;
-        $dataToSave = $this->getData($link, $data);
-        if (!empty($dataToSave)) {
-          $sphinx->SaveToSphinx($dataToSave);
+
+        if ($item->find('a', 0)) {
+          $link = 'https://www.marocannonces.com/' . $item->find('a', 0)->href;
+          $dataToSave = $this->getData($link, $site);
+          if (!empty($dataToSave)) {
+            $this->sphinx->SaveToSphinx($dataToSave);
+          }
         }
       }
+      die;
     }
   }
 

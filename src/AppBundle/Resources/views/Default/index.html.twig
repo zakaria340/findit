@@ -6,6 +6,16 @@
 
 {% block title %}{{ parent() }} - Index{% endblock %}
 
+{% block topHeader %}
+    <div class="full-pitch group">
+        <h1>
+            <strong>Le 1er moteur de recherche d'annonces au maroc.</strong>
+            Rechercher le meilleur prix dans plusieurs sites d'annonces au Maroc rapidement et comparer les prix du même
+            article !
+        </h1>
+    </div>
+{% endblock %}
+
 {% block body %}
     <div id="main" class="content container main-full searchAnnonces">
         <div id="c_15" class="trends">
@@ -13,7 +23,7 @@
                href="{{ path('list_annonces', {'ville': city, 'tags': 'appartement'}) }}"
                class="trends__item trends__item--news">
               <span>
-                <img src="http://localhost/mytest/mytest/img/immobilier.jpg" alt="">
+                <img src="{{ asset("img/immobilier.jpg") }}" alt="Immobiler - Appartement">
                 <span class="trends__item__content">
                   <span class="trends__item__content__icon"></span>
                   <span class="trends__item__content__title trends__item__content__title--long">
@@ -26,7 +36,7 @@
                href="{{ path('list_annonces', {'ville': city, 'tags': 'voitures'}) }}"
                class="trends__item trends__item--news">
               <span>
-                <img src="http://localhost/mytest/mytest/img/voitures.jpg" alt="">
+                <img src="{{ asset("img/voitures.jpg") }}" alt="Voitures occasion">
                 <span class="trends__item__content">
                   <span class="trends__item__content__icon"></span>
                   <span class="trends__item__content__title trends__item__content__title--long">
@@ -36,11 +46,11 @@
               </span>
             </a>
             <a target="_self" title="Informatique - Multimedia"
-               href="{{ path('list_annonces', {'ville': city, 'tags': 'voitures'}) }}"
+               href="{{ path('list_annonces', {'ville': city, 'tags': 'informatique-et-multimedia'}) }}"
                class="trends__item trends__item--news">
               <span>
-                <img src="http://localhost/mytest/mytest/img/pc.jpg"
-                     alt="">
+                <img src="{{ asset("img/pc.jpg") }}"
+                     alt="Informatique - Multimedia">
                 <span class="trends__item__content">
                   <span class="trends__item__content__icon"></span>
                   <span class="trends__item__content__title trends__item__content__title--long">
@@ -53,7 +63,7 @@
                href="{{ path('list_annonces', {'ville': city, 'tags': 'offres-emploi'}) }}"
                class="trends__item trends__item--news">
               <span>
-                <img src="http://localhost/mytest/mytest/img/careers.jpg" alt="">
+                <img src="{{ asset("img/careers.jpg") }}" alt="Offres d'emploi">
                 <span class="trends__item__content">
                   <span class="trends__item__content__icon"></span>
                   <span class="trends__item__content__title trends__item__content__title--long">
@@ -62,6 +72,48 @@
                 </span>
               </span>
             </a>
+        </div>
+        <div class="randomAnnonces">
+            <h3>Nous vous recommandons: </h3>
+            <ol class="group collections ">
+                {% if randomAnnonces is not empty %}
+                    {% for annonce in randomAnnonces %}
+                        <li class="group singleAnnonce" id="screenshot-{{ annonce.idAnnonces }}">
+                            <div class="dribbble">
+                                <div class="dribbble-shot">
+                                    <div class="dribbble-img">
+                                        <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                           class="dribbble-link">
+                                            <div data-alt="{{ annonce.title }}" data-picture="">
+                                                <img alt="{{ annonce.title }}"
+                                                     src="{{ asset(annonce.image) }}">
+                                            </div>
+                                        </a>
+                                        <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                           class="dribbble-over">
+                                            <span class="comment">{{ annonce.description[:150] ~ ' ...' }}</span>
+                                            <em class="timestamp"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="attribution hover-card-parent">
+            <span class="attribution-user">
+                <img title="Site {{ annonce.idSite|SiteInfos.name }}"
+                     src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite">
+                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                   class="url hoverable">{{ annonce.title }}  </a>
+            </span>
+                                <span class="badge badge-pro">{{ annonce.prix }} DH</span>
+                            </h2>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <div class="null null-message">
+                        <h2>Aucune annonce trouver.</h2>
+                    </div>
+                {% endif %}
+            </ol>
         </div>
     </div>
 {% endblock %}

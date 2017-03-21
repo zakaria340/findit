@@ -5,7 +5,13 @@ namespace AppBundle\Providers;
 Class Avitoma {
 
   public $_baseUrl = 'http://www.avito.ma/vi/';
-  public $_db;
+  protected $em;
+  protected $sphinx;
+
+  public function __construct($em, $sphinx) {
+    $this->em = $em;
+    $this->sphinx = $sphinx;
+  }
 
   public function getData($annonce, $category, $data) {
     $url = $annonce->url;
@@ -13,31 +19,28 @@ Class Avitoma {
     /**
      * Check if Annonce exist.
      */
-    $sphinx = new Sphinx($this->_db);
-    $d = $sphinx->checkAnnoncebyUrl($url);
+    $d = $this->sphinx->checkAnnoncebyUrl($url);
     if (!empty($d)) {
       return array();
     }
 
-    $dataToSave = array();
-    $idVille = Utilities::getVille($annonce->full_ad_data->region);
-    $tags = Utilities::getTags(array($category));
-
-
     if (isset($annonce->full_ad_data->image) && $annonce->full_ad_data->image->standard != '') {
       $imageUnique = md5(time() . 3 . $annonce->id) . '.jpg';
-      Utilities::resizeandsave($annonce->full_ad_data->image->standard, $data['idSites'], $imageUnique);
+      $pathNewImage = $this->sphinx->resizeandsave($annonce->full_ad_data->image->standard, $data->getIdSites(), $imageUnique);
     }
     else {
-      $imageUnique = '';
+      return array();
     }
+
+    $idVille = $this->sphinx->getVille($annonce->full_ad_data->region);
+    $tags = $this->sphinx->getTags(array($category));
     $price = '';
     if (isset($annonce->full_ad_data->price->value) && !is_null($annonce->full_ad_data->price->value)) {
       $price = $annonce->full_ad_data->price->value;
     }
     $description = '';
     if (isset($annonce->full_ad_data->body) && !is_null($annonce->full_ad_data->body)) {
-      $description = $annonce->full_ad_data->body;
+      $description = strip_tags($annonce->full_ad_data->body);
     }
 
     $extraKeywords = array();
@@ -53,15 +56,15 @@ Class Avitoma {
       $date = strtotime($annonce->full_ad_data->date);
     }
     $dataToSave = array(
-      'idSphinx'      => $data['prefix'] . $annonce->id,
+      'idSphinx'      => $data->getPrefix() . $annonce->id,
       'idAnnonce'     => $annonce->id,
-      'idSite'        => $data['idSites'],
+      'idSite'        => $data->getIdSites(),
       'title'         => $annonce->subject,
-      'description'   => strip_tags($annonce->full_ad_data->body),
+      'description'   => $description,
       'date'          => $date,
       'ville'         => array($idVille => $annonce->full_ad_data->region),
       'tags'          => $tags,
-      'image'         => $imageUnique,
+      'image'         => $pathNewImage,
       'prix'          => $price,
       'url'           => $url,
       'extraKeywords' => $extraKeywords,
@@ -70,33 +73,39 @@ Class Avitoma {
     return $dataToSave;
   }
 
+  /**
+   * @param $url
+   *
+   * @return mixed
+   */
   public function getjsonFromUrl($url) {
     $json = file_get_contents($url);
     $obj = json_decode($json);
     return $obj;
   }
 
-  public function fetchALLAnnonces($nbr) {
-    $sphinx = new Sphinx($this->_db);
+  /**
+   * @param $nbr
+   */
+  public function fetchALLAnnonces() {
+    $site = $this->em->getRepository('AppBundle:Sites')->find(1);
     $villes = $this->getjsonFromUrl('http://www.avito.ma/templates/api/confregions.js?v=3');
     $categories = $this->getjsonFromUrl('http://www.avito.ma/templates/api/confcategories.js?v=3');
-    $sitesTable = new \Zend\Db\TableGateway\TableGateway('sites', $this->_db);
 
-    $rowset = $sitesTable->select(array('idSites' => 1));
-    $dataSite = $rowset->current();
     foreach ($villes->regions as $ville) {
       foreach ($categories->categories as $category) {
         $url_annonces = 'http://www.avito.ma/lij?fullad=1&q=&w=112&ca=' . $ville->id . '_s&cg=' . $category->id
           . '&st=s';
         $annonces = $this->getjsonFromUrl($url_annonces);
         foreach ($annonces->list_ads as $annonce) {
-          $dataToSave = $this->getData($annonce, $category->name, $dataSite);
+          $dataToSave = $this->getData($annonce, $category->name, $site);
           if (!empty($dataToSave)) {
-            $sphinx->SaveToSphinx($dataToSave);
+            $this->sphinx->SaveToSphinx($dataToSave);
           }
         }
       }
     }
+
   }
 
 }

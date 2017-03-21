@@ -31,6 +31,8 @@ class SearchForm extends AbstractType {
           return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');
         },
         'choice_label'  => 'name',
+        'required' => FALSE,
+        'placeholder' => 'Tous les catégorie',
         'multiple'      => FALSE,
       )
       )->add(
@@ -40,6 +42,8 @@ class SearchForm extends AbstractType {
           return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');
         },
         'choice_label'  => 'name',
+        'required' => FALSE,
+        'placeholder' => 'Toute les villes',
         'multiple'      => FALSE,
       )
       )->add(

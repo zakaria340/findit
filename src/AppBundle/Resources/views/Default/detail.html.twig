@@ -3,27 +3,30 @@
 
 {% extends "AppBundle::layout.html.twig" %}
 
-{% block title %}Cherchi.ma - {{ annonce.ville }} {{ annonce.title }} {% endblock %}
+{% block title %}Cherchi.ma - {{ annonce.ville }} {{ annonce.title }} Prix Maroc {% endblock %}
 {% block canonical_rel %}
     <link rel="canonical" href="http://localhost/cherchima/web/app_dev.php/annonce/"/> {% endblock %}
-
 {% block body %}
     <div class="shot-overlay" style="" tabindex="-1">
-        <a href="{{ path('list_annonces', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}" class="close-overlay" aria-label="close"></a>
+        <a href="{{ path('list_annonces', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}"
+           class="close-overlay" aria-label="close"></a>
         <div class="overlay-content group" style="">
             <!-- /main -->
             <div class="slat-header user ">
-                    <picture>
-                        <img title="Site {{annonce.idSite|SiteInfos.name }}" src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}"
-                             class="photo">
-                    </picture>
+                <picture>
+                    <img title="Site {{ annonce.idSite|SiteInfos.name }}"
+                         src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}"
+                         class="photo">
+                </picture>
                 <a href="javascript:void(0)" title="George Bokhua" rel="contact" class="url hoverable"></a>
                 <h1>{{ annonce.title }} <span class="badge badge-pro">{{ annonce.prix }} DH </span></h1>
 
                 <h2 class="shot-byline">
       <span class="attribution ">
         <span class="shot-byline-user">
-         <a href="javascript:void(0)" class="url hoverable">  {{ annonce.tags }} / {{ annonce.ville }} </a>
+         <a title="Annonces {{ annonce.tags }} / {{ annonce.ville }} Maroc"
+            href="{{ url('list_annonces', {'ville': annonce.ville, 'tags': annonce.tags}) }}"
+            class="url hoverable"> Annonces {{ annonce.tags }} / {{ annonce.ville }} Maroc </a>
         </span>
       </span>
 
@@ -47,30 +50,39 @@
                             <p>{{ annonce.description }}</p>
                         </div>
                     </div>
-
-                    <div class="screenshot-meta   is-team">
-
+                    <div class="screenshot-meta is-team">
                         <ul class="shot-stats">
                             {% for dataItem in annonce.getExtraAnnonces() %}
                                 <li class="shot-stats-share">
-                                    <a class="stats-action share-shot" href="#">
-                                        <img alt="Icon shotstat share"
-                                             src="https://d13yacurqjgara.cloudfront.net/assets/icon-shotstat-share-128ae71c26985fc7325ac5362aba434686f12fdfffa45ed874262a19f923b071.png">
-                                        <span class="stats-label">{{ dataItem.label }}</span>
-                                    </a>
-                                    <span class="views-count stats-num">
+                                    {% if dataItem.label is defined %}
+                                        <a href="#" class="stats-action share-shot">
+                                            <span class="stats-label">{{ dataItem.label }}</span>
+                                        </a>
+                                    {% endif %}
+                                    {% if dataItem.value is defined %}
+                                        <span class="views-count stats-num">
                                         {{ dataItem.value }}
                                     </span>
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
                         <div class="related-player-shots">
                             <h3 class="meta-head">
-                                <a href="">
-                                    Annonces Similaires :
-                                </a></h3>
-                            <ol class="more-thumbs">
 
+                                    Annonces Similaires :
+                                </h3>
+                            <ol class="more-thumbs">
+                                {% for anno in annoncesSimilar %}
+                                    <li>
+                                        <a class="url hoverable"
+                                           href="{{ path('detail_annonces', {'ville': anno.ville|GenerateSlug, 'idannonce': anno.idAnnonces, 'title': anno.title|GenerateSlug}) }}">
+                                            <img class="similar" alt="{{ anno.title }}"
+                                                 src="{{ asset(anno.image) }}">
+                                            <span> {{ anno.title }} </span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
                             </ol>
                         </div>
                     </div>

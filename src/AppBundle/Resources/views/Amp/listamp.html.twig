@@ -4,25 +4,19 @@
 {% extends "AppBundle::layout.html.twig" %}
 
 
-{% block title %}Cherchi.ma - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
+{% block title %}Cherche.ma - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
 {% block canonical_rel %}
     <link rel="canonical" href="{{ url('list_annonces', arguments) }}"/> {% endblock %}
 
-{% block topHeader %}
-<div class="full-pitch group">
-    <h1>
-       Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
-        <strong>Prix {{ arguments.ville }} Maroc</strong>
-    </h1>
-</div>
-{% endblock %}
 {% block body %}
     {% if annonces is not empty %}
-        <h2 class="section">
-            {{ countAnnonces }} Annonces trouvées
-        </h2>
+        <div class="full-tabs">
+            <ul class="shot-menu full-tabs-links">
+                <li><h2>Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
+                        Prix {{ arguments.ville }} Maroc</h2></li>
+            </ul>
+        </div>
     {% endif %}
-
     <ol class="group collections ">
         {% if annonces is not empty %}
             {% for annonce in annonces %}

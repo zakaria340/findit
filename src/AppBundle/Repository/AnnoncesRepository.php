@@ -31,26 +31,11 @@ class AnnoncesRepository extends \Doctrine\ORM\EntityRepository {
     }
 
     $qb = $this->createQueryBuilder('a');
-    
+
     $qb->where("a.idAnnonces IN(:ids)");
     $qb->setParameter('ids', $ids_count);
 
     $query = $qb->getQuery();
-    /*$query->leftJoin('a.ville', 'v');*/
-    //$query->innerJoin('a.villes','name as labelVille');
-
-    /*return $this->getEntityManager()
-      ->createQueryBuilder()
-      ->select('r')
-      ->from('CRMCoreBundle:Route', 'r')
-      ->innerJoin('r.routegroup','rg')
-      ->innerJoin('rg.profiles','p')
-      ->innerJoin('p.users','u')
-      ->where('u.id = :user_id')
-      ->setParameter('user_id', $user->getId())
-      ->getQuery()
-      ->getResult();*/
-
     $premierResultat = ($page - 1) * $nbMaxParPage;
 
     $query->setFirstResult($premierResultat)->setMaxResults($nbMaxParPage);
@@ -62,4 +47,41 @@ class AnnoncesRepository extends \Doctrine\ORM\EntityRepository {
 
     return $paginator;
   }
+
+  /**
+   * @param $ville
+   * @param $tags
+   * @param $keys
+   */
+  public function findAllSimilar($ville, $tags) {
+    $qb = $this->createQueryBuilder('a');
+    $qb->where("a.ville IN(:ville) AND a.tags IN(:tag)");
+    $qb->setParameters(array('ville' => $ville, 'tag' => $tags));
+    $query = $qb->getQuery();
+    $query->setMaxResults(20);
+    $similiarAnnonces = $query->execute();
+
+    shuffle($similiarAnnonces);
+    $similiarAnnonces = array_splice($similiarAnnonces, 0, 6);
+    return $similiarAnnonces;
+  }
+
+  /**
+   * @param $ville
+   *
+   * @return array|mixed
+   */
+  public function RandomAnnonces($ville) {
+    $qb = $this->createQueryBuilder('a');
+    $qb->where("a.ville IN(:ville)");
+    $qb->setParameters(array('ville' => $ville));
+    $query = $qb->getQuery();
+    $query->setMaxResults(20);
+    $similiarAnnonces = $query->execute();
+
+    shuffle($similiarAnnonces);
+    $similiarAnnonces = array_splice($similiarAnnonces, 0, 8);
+    return $similiarAnnonces;
+  }
+
 }

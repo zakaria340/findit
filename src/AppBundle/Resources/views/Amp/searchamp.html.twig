@@ -1,14 +1,14 @@
 {# src/OC/PlatformBundle/Resources/views/Advert/form.html.twig #}
-
-
+<script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
 <div class="search-extra ">
     <ol class="search-extra-list ">
         <li id="t-search">
-            {{ form_start(form, {'action': path('homepage'), 'method': 'POST', 'attr': {'class': 'home__search search-form', 'id':'search'}}) }}
+            {{ form_start(form, {'action': path('homepageamp'), 'method': 'post', 'attr': {'target':'_top','class': 'home__search search-form', 'id':'search', 'action-xhr': path('homepageamp')}}) }}
+
             {{ form_errors(form) }}
             {{ form_widget(form.search, {'attr': {'class': 'autocomplete__submit'}}) }}
             <div class="autocomplete">
-                {{ form_widget(form.text, {'attr': {'placeholder': 'Exp : Iphone, Mercedes, Appartement, Samsung ...','class': 'autocomplete__hint', 'id': 'home__hint'}}) }}
+                {{ form_widget(form.text, {'attr': {'placeholder': 'Que recherchez-vous ?','class': 'autocomplete__hint', 'id': 'home__hint'}}) }}
             </div>
             {{ form_widget(form.villes, {'attr': {'class': 'villes-select select-block-level white-border'}}) }}
             {{ form_widget(form.tags, {'attr': {'class': 'tags-select select-block-level white-border'}}) }}

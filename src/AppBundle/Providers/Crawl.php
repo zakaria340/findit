@@ -2,8 +2,7 @@
 
 namespace AppBundle\Providers;
 
-use AppBundle\Providers\Moteur;
-use AppBundle\Providers\Sarouty;
+
 use Doctrine\ORM\EntityManager;
 
 Class Crawl {
@@ -22,10 +21,15 @@ Class Crawl {
   }
 
   public function CrawlOn() {
-    $sarouty = new Sarouty($this->em, $this->sphinx);
+    $wandaloo = new Marocannonces($this->em, $this->sphinx);
+    $wandaloo->fetchALLAnnonces();
+    var_dump($wandaloo);
+    die;
+    
+    /*$sarouty = new Sarouty($this->em, $this->sphinx);
     $sarouty->fetchALLAnnonces();
     var_dump($sarouty);
-    die;
+    die;*/
     //$moteur->fetchALLAnnonces(2);
 
   }
