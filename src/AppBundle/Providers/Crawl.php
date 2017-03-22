@@ -37,21 +37,31 @@ Class Crawl {
    * 
    * @see AppBundle:Cron.
    */
-  public function CrawlOn() {
-    $wandaloo = new Marocannonces($this->em, $this->sphinx);
-    $wandaloo->fetchALLAnnonces(2);
+  public function CrawlOn($provider, $nbr = 2) {
+    if ($provider == 'wandaloo') {
+      $wandaloo = new Wandaloo($this->em, $this->sphinx);
+      $wandaloo->fetchALLAnnonces($nbr);
+    }
 
-    $sarouty = new Sarouty($this->em, $this->sphinx);
-    $sarouty->fetchALLAnnonces(2);
+    if ($provider == 'sarouty') {
+      $sarouty = new Sarouty($this->em, $this->sphinx);
+      $sarouty->fetchALLAnnonces($nbr);
+    }
 
-    $wandaloo = new Wandaloo($this->em, $this->sphinx);
-    $wandaloo->fetchALLAnnonces(2);
+    if ($provider == 'moteur') {
+      $moteur = new Moteur($this->em, $this->sphinx);
+      $moteur->fetchALLAnnonces(2);
+    }
 
-    $moteur = new Moteur($this->em, $this->sphinx);
-    $moteur->fetchALLAnnonces(2);
+    if ($provider == 'marocannonces') {
+      $wandaloo = new Marocannonces($this->em, $this->sphinx);
+      $wandaloo->fetchALLAnnonces($nbr);
+    }
 
-    $avito = new Avitoma($this->em, $this->sphinx);
-    $avito->fetchALLAnnonces(2);
+    if ($provider == 'avitoma') {
 
+      $avito = new Avitoma($this->em, $this->sphinx);
+      $avito->fetchALLAnnonces($nbr);
+    }
   }
 }

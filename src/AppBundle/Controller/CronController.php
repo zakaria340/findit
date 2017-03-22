@@ -11,11 +11,11 @@ use Foolz\SphinxQL\Connection;
 
 class CronController extends Controller {
   /**
-   * @Route("/cron", name="cronpage")
+   * @Route("/cron/{provider}/{nbr}", name="cronpage")
    */
-  public function indexAction(Request $request) {
+  public function indexAction(Request $request, $provider = '', $nbr = 2) {
     $crawl = $this->container->get('appbundle.crawl');
-    $crawl->CrawlOn();
+    $crawl->CrawlOn($provider, $nbr);
   }
 
 }
