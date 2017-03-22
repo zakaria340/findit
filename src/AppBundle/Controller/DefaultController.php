@@ -119,7 +119,10 @@ class DefaultController extends Controller {
     $query = SphinxQL::create($conn)->select('*')->from('annonces11');
 
     if (!is_null($keys) && $keys != '') {
-      $query->match(array('title', 'description', 'tags', 'ville'), $keys);
+      $keysarray = explode('-', $keys);
+      foreach($keysarray as $a) {
+        $query->match(array('title', 'description', 'tags', 'ville'), $a);
+      }
     }
     if ($ville != 'tous') {
       $query->match(array('ville'), $ville);
