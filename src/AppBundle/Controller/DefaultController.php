@@ -15,7 +15,7 @@ class DefaultController extends Controller {
    */
   public function indexAction(Request $request) {
 
-    $ip = "92.3.2.10";//$_SERVER['REMOTE_ADDR'] $this->get_real_ip();
+    $ip = $this->get_real_ip();
     $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
 
     $city = 'casablanca';
@@ -25,7 +25,6 @@ class DefaultController extends Controller {
     $searchForm = $this->createForm(SearchForm::class);
 
     if ($request->isMethod('POST')) {
-      $this->forward('AppBundle:Default:list', $_POST);
       $searchForm->handleRequest($request);
       $data = $searchForm->getData();
       $params = array(

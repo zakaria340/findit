@@ -5,6 +5,12 @@
 
 
 {% block title %}Cherchi.ma - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
+
+<meta name="description" content="
+Comparer les annonces {{ arguments.tags }} {{ arguments.keys }} au maroc {{ arguments.ville }}. le meilleur prix {{ arguments.keys }} des annonces {{ arguments.tags }} au maroc dans plusieurs sites
+d'annonces et comparer les prix {{ arguments.ville }} {{ arguments.tags }} {{ arguments.keys }} Maroc du même article."/>
+{% endblock %}
+
 {% block canonical_rel %}
     <link rel="canonical" href="{{ url('list_annonces', arguments) }}"/> {% endblock %}
 
@@ -60,7 +66,7 @@
                     </div>
                     <h2 class="attribution hover-card-parent">
             <span class="attribution-user">
-                <img title="Site {{ annonce.idSite|SiteInfos.name }}"
+                <img alt="Site {{ annonce.idSite|SiteInfos.name }}" title="Site {{ annonce.idSite|SiteInfos.name }}"
                      src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite">
                 <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                    class="url hoverable">{{ annonce.title }}  </a>

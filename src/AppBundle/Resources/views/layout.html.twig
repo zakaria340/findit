@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     {#<script async src="https://cdn.ampproject.org/v0.js"></script>#}
     <title>{% block title %}Cherchi.ma Moteur de recherche des annonces prix au Maroc{% endblock %}</title>
+
+    {% block metadescription %}
+
+    {% endblock %}
+
     {% block canonical_rel %}
         <link rel="canonical" href="{{ url('homepage') }}"/>{% endblock %}
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
@@ -40,7 +45,7 @@
 <body>
 <div class="group" id="header">
     <div class="group" id="header-inner">
-        <div id="logo"><h1><a title="Cherchi.ma Moteur de recherche des annonces prix au Maroc" href="{{ url('homepage') }}">Cherchima</a></h1></div>
+        <div id="logo"><a title="Cherchi.ma Moteur de recherche des annonces prix au Maroc" href="{{ url('homepage') }}">Cherchima</a></div>
     </div>
 </div>
 

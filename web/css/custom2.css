@@ -257,3 +257,10 @@ ol.more-thumbs li {
 .search-extra-list  h2 {
     font-size: 16px;
 }
+
+#logo a {
+    color: #fff;
+    font-family: Pacifico;
+    margin-top: 10px;
+    font-size: 26px;
+}
