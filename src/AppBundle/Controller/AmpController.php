@@ -152,6 +152,7 @@ class AmpController extends Controller {
           'tags'  => str_replace('-', ' ', $tags),
           'keys'  => str_replace('-', ' ', $keys),
         ),
+        'countAnnonces' => $annonces->count()
       )
     );
   }

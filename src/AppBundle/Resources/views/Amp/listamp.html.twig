@@ -1,21 +1,29 @@
 {# src/AppBundle/Resources/views/Default/list.html.twig #}
 
 
-{% extends "AppBundle::layout.html.twig" %}
+{% extends "AppBundle::layoutamp.html.twig" %}
 
 
 {% block title %}Cherche.ma - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
+
 {% block canonical_rel %}
-    <link rel="canonical" href="{{ url('list_annonces', arguments) }}"/> {% endblock %}
+<link rel="canonical" href="{{ url('list_annonces', arguments) }}">
+{% endblock %}
+
+{% block topHeader %}
+    <div class="full-pitch group">
+        <h1>
+            Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
+            <strong>Prix {{ arguments.ville }} Maroc</strong>
+        </h1>
+    </div>
+{% endblock %}
 
 {% block body %}
     {% if annonces is not empty %}
-        <div class="full-tabs">
-            <ul class="shot-menu full-tabs-links">
-                <li><h2>Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
-                        Prix {{ arguments.ville }} Maroc</h2></li>
-            </ul>
-        </div>
+        <h2 class="section">
+            {{ countAnnonces }} Annonces trouvées
+        </h2>
     {% endif %}
     <ol class="group collections ">
         {% if annonces is not empty %}
@@ -27,8 +35,8 @@
                                 <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                                    class="dribbble-link">
                                     <div data-alt="{{ annonce.title }}" data-picture="">
-                                        <img alt="{{ annonce.title }}"
-                                             src="{{ asset(annonce.image) }}">
+                                        <amp-img height="250" width="300" alt="{{ annonce.title }}"
+                                             src="{{ asset(annonce.image) }}"></amp-img>
                                     </div>
                                 </a>
                                 <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
@@ -54,8 +62,8 @@
                     </div>
                     <h2 class="attribution hover-card-parent">
             <span class="attribution-user">
-                <img title="Site {{ annonce.idSite|SiteInfos.name }}"
-                     src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite">
+                <amp-img height="20" width="20" title="Site {{ annonce.idSite|SiteInfos.name }}"
+                     src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite"></amp-img>
                 <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                    class="url hoverable">{{ annonce.title }}  </a>
             </span>
@@ -70,7 +78,6 @@
         {% endif %}
     </ol>
 
-    <div style="clear: both"></div>
     {% include "AppBundle::pagination.html.twig" %}
 
 {% endblock %}

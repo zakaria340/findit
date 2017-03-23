@@ -13,7 +13,9 @@ d'annonces et comparer les prix au Maroc du même article."/>
 {% endblock %}
 
 {% block canonical_rel %}
-    <link rel="canonical" href="{{ url('list_annonces', arguments) }}"/> {% endblock %}
+    <link rel="amphtml" href="{{ url('list_annoncesamp', arguments) }}">
+{% endblock %}
+
 
 {% block topHeader %}
 <div class="full-pitch group">
