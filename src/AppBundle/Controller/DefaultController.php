@@ -20,7 +20,7 @@ class DefaultController extends Controller {
 
     $city = 'casablanca';
     if ($query && $query['status'] == 'success') {
-      //$city = $this->clean($query['city']);
+      $city = $this->clean($query['city']);
     }
     $searchForm = $this->createForm(SearchForm::class);
 
@@ -79,6 +79,19 @@ class DefaultController extends Controller {
     return $this->render(
       'AppBundle:Default:search.html.twig', array(
         'form' => $form->createView(),
+      )
+    );
+  }
+
+  public function footerAction(Request $request) {
+    $em = $this->getDoctrine()->getManager();
+    $tags = $em->getRepository(
+      'AppBundle:Tags'
+    )->findAll();
+
+    return $this->render(
+      'AppBundle:Default:footer.html.twig', array(
+        'tags' => $tags,
       )
     );
   }

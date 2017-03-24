@@ -32,14 +32,14 @@
                     <div class="dribbble">
                         <div class="dribbble-shot">
                             <div class="dribbble-img">
-                                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                <a href="{{ path('detail_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                                    class="dribbble-link">
                                     <div data-alt="{{ annonce.title }}" data-picture="">
                                         <amp-img height="250" width="300" alt="{{ annonce.title }}"
                                              src="{{ asset(annonce.image) }}"></amp-img>
                                     </div>
                                 </a>
-                                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                <a href="{{ path('detail_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                                    class="dribbble-over">
                                     <span class="comment">{{ annonce.description[:150] ~ ' ...' }}</span>
                                     <em class="timestamp"></em>
@@ -64,7 +64,7 @@
             <span class="attribution-user">
                 <amp-img height="20" width="20" title="Site {{ annonce.idSite|SiteInfos.name }}"
                      src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite"></amp-img>
-                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                <a href="{{ path('detail_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                    class="url hoverable">{{ annonce.title }}  </a>
             </span>
                         <span class="badge badge-pro">{{ annonce.prix }} DH</span>

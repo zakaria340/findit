@@ -1,7 +1,7 @@
 {# src/AppBundle/Resources/views/Default/list.html.twig #}
 
 
-{% extends "AppBundle::layout.html.twig" %}
+{% extends "AppBundle::layoutamp.html.twig" %}
 
 {% block title %}Cherchi.ma - {{ annonce.ville }} {{ annonce.title }} Prix Maroc {% endblock %}
 {% block metadescription %}
@@ -11,28 +11,26 @@ au maroc dans plusieurs sites d'annonces au Maroc rapidement et comparer les pri
 {% endblock %}
 
 {% block canonical_rel %}
-    <link rel="amphtml" href="{{ url('detail_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}">
+    <link rel="canonical" href="{{ url('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}">
 {% endblock %}
 {% block body %}
-    <div class="shot-overlay" style="" tabindex="-1">
-        <a href="{{ path('list_annonces', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}"
+    <div class="shot-overlay" tabindex="-1">
+        <a href="{{ path('list_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}"
            class="close-overlay" aria-label="close"></a>
-        <div class="overlay-content group" style="">
+        <div class="overlay-content group">
             <!-- /main -->
             <div class="slat-header user ">
-                <picture>
-                    <img title="Site {{ annonce.idSite|SiteInfos.name }}"
+                    <amp-img height="20" width="20" title="Site {{ annonce.idSite|SiteInfos.name }}"
                          src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}"
-                         class="photo">
-                </picture>
-                <a href="javascript:void(0)" title="George Bokhua" rel="contact" class="url hoverable"></a>
+                         class="photo"></amp-img>
+                <a href="#" title="George Bokhua" rel="contact" class="url hoverable"></a>
                 <h1>{{ annonce.title }} <span class="badge badge-pro">{{ annonce.prix }} DH </span></h1>
 
                 <h2 class="shot-byline">
       <span class="attribution ">
         <span class="shot-byline-user">
          <a title="Annonces {{ annonce.tags }} / {{ annonce.ville }} Maroc"
-            href="{{ url('list_annonces', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}"
+            href="{{ url('list_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'tags': annonce.tags|GenerateSlug}) }}"
             class="url hoverable"> Annonces {{ annonce.tags }} / {{ annonce.ville }} Maroc </a>
         </span>
       </span>
@@ -46,8 +44,7 @@ au maroc dans plusieurs sites d'annonces au Maroc rapidement et comparer les pri
                 <div data-img-src="images/{{ annonce.idSite }}/{{ annonce.image }}"
                      data-screenshot_id="{{ annonce.idAnnonces }}" class="the-shot">
                     <div class="single group">
-                        <img src="{{ asset(annonce.image) }}"
-                             style="width: 100%; height: 100%">
+                        <amp-img height="250" width="350" src="{{ asset(annonce.image) }}"></amp-img>
                     </div>
                 </div>
                 <div class="screenshot-info-wrapper">
@@ -83,9 +80,9 @@ au maroc dans plusieurs sites d'annonces au Maroc rapidement et comparer les pri
                                 {% for anno in annoncesSimilar %}
                                     <li>
                                         <a class="url hoverable"
-                                           href="{{ path('detail_annonces', {'ville': anno.ville|GenerateSlug, 'idannonce': anno.idAnnonces, 'title': anno.title|GenerateSlug}) }}">
-                                            <img class="similar" alt="{{ anno.title }}"
-                                                 src="{{ asset(anno.image) }}">
+                                           href="{{ path('detail_annoncesamp', {'ville': anno.ville|GenerateSlug, 'idannonce': anno.idAnnonces, 'title': anno.title|GenerateSlug}) }}">
+                                            <amp-img height="86" width="115" class="similar" alt="{{ anno.title }}"
+                                                 src="{{ asset(anno.image) }}"></amp-img>
                                             <span> {{ anno.title }} </span>
                                         </a>
                                     </li>

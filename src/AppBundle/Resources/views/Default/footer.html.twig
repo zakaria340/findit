@@ -1,0 +1,6 @@
+{# src/OC/PlatformBundle/Resources/views/Advert/form.html.twig #}
+<ul class="extra-links">
+    {% for tag in tags %}
+        <li><a title="{{ tag.name }} prix maroc" href="{{ url('list_annonces', {'ville': 'tous', 'tags':  tag.slug }) }}">{{ tag.name }} prix maroc</a></li>
+    {% endfor %}
+</ul>

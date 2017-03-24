@@ -81,8 +81,8 @@ class AmpController extends Controller {
 
   /**
    * @Route(
-   *     "/annonce/{ville}/{idannonce}/{title}",
-   *     name="detail_annonces",
+   *     "/amp/annonce/{ville}/{idannonce}/{title}",
+   *     name="detail_annoncesamp",
    *     requirements={
    *         "idannonce": "\d*"
    *     }
@@ -94,10 +94,11 @@ class AmpController extends Controller {
     if (!$annonce) {
       return $this->redirect($this->generateUrl('homepage'));
     }
-
+    $annoncesSimilar = $em->getRepository('AppBundle:Annonces')->findAllSimilar($ville, $annonce->getTags());
     return $this->render(
-      'AppBundle:Default:detail.html.twig', array(
+      'AppBundle:Amp:detailamp.html.twig', array(
         'annonce' => $annonce,
+        'annoncesSimilar' => $annoncesSimilar
       )
     );
   }
@@ -136,7 +137,7 @@ class AmpController extends Controller {
     $pagination = array(
       'page'        => $page,
       'nbPages'     => ceil(count($annonces) / $nbArticlesParPage),
-      'nomRoute'    => 'list_annonces',
+      'nomRoute'    => 'list_annoncesamp',
       'paramsRoute' => array('ville' => $ville, 'tags' => $tags, 'keys' => $keys),
     );
 

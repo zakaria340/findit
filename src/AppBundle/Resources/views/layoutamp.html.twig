@@ -164,102 +164,6 @@
             div.title-alt h1, div.title-alt p {
                 padding-left: 240px;
             }
-            div.full p {
-                margin-top: 4px;
-                font-size: 1.36em;
-                line-height: 1.3;
-                color: #999999;
-            }
-            body#account form.account .for-hire {
-                display: none;
-            }
-            body#account form.account .for-hire.available {
-                display: block;
-            }
-            body#account-pro div.full p strong {
-                color: #777777;
-            }
-            div.full p span.could {
-                border-bottom: 1px solid #bbb;
-            }
-            div.full p span.badge, div.full p span.badge-sale {
-                position: relative;
-                top: -2px;
-            }
-            div.full h2#action {
-                margin: 20px 0 10px 0;
-                text-align: left;
-                font-weight: normal;
-                color: #777777;
-            }
-            div.full h2#action a {
-                text-decoration: underline;
-                font-size: 1.6em;
-            }
-            h1 {
-                font-size: 22px;
-                line-height: 1.5;
-            }
-            h1.title {
-                font-weight: normal;
-                line-height: 1.3;
-            }
-            h1.compact, h1.center {
-                font-size: 16px;
-                font-weight: normal;
-                line-height: 1.3;
-                color: #777777;
-            }
-            h1.compact strong, h1.center strong {
-                font-weight: 500;
-                color: #333;
-            }
-            h1.compact span.sep, h1.center span.sep {
-                margin: 0 2px;
-                color: #bbb;
-                text-shadow: none;
-            }
-            h1.compact span.meta, h1.center span.meta {
-                margin-left: 4px;
-                font-size: 11px;
-                color: #bbb;
-            }
-            h1.center {
-                position: relative;
-                margin-bottom: 30px;
-                padding-bottom: 30px;
-                font-size: 24px;
-                line-height: 1;
-                text-align: center;
-                border-bottom: 1px solid #dddddd;
-            }
-            @media screen and (max-width: 870px) {
-                h1.center {
-                    margin-bottom: 20px;
-                    padding: 8px 0 20px;
-                    line-height: 1.25;
-                    font-size: 18px;
-                }
-            }@media screen and (max-width: 800px) {
-                h1.center.title-long {
-                    font-size: 14px;
-                }
-                h1.center.title-long strong {
-                    display: block;
-                    font-size: 18px;
-                    margin-bottom: 5px;
-                }
-            }@media screen and (max-width: 800px) {
-                h1.center.with-prev-next {
-                    padding-bottom: 30px;
-                }
-            }h1.center a.previous_page {
-                 position: absolute;
-                 top: 5px;
-                 left: 0;
-                 font-size: 15px;
-                 font-weight: 500;
-             }
 
           ol.dribbbles li.group, ol.collections li.group {
                  position: relative;
@@ -735,6 +639,199 @@
             }
 
 
+            .shot-overlay {
+                background: rgba(30,30,30,0.9);
+                top: 0;
+                left: 0;
+                z-index: 9997;
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                overflow-y: scroll;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                -webkit-overflow-scrolling: touch;
+            }
+            .overlay-content {
+                position: absolute;
+                z-index: 9997;
+                top: 20px;
+                left: 50%;
+                width: 920px;
+                margin-left: -460px;
+                padding: 40px 95px;
+                background: #f4f4f4;
+                background-position: fixed;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                border-radius: 6px;
+            }
+            div.slat-header h1 span.badge, div.slat-header h1 span.badge-sale {
+                font-size: 14px;
+                vertical-align: middle;
+                position: relative;
+                top: -1px;
+            }
+            h1 span.badge, h1 span.badge-sale, span.badge, span.badge-sale {
+                padding: 1px 3px;
+                font-family: Helvetica;
+                font-size: 10px;
+                font-weight: bold;
+                line-height: 1;
+                text-transform: uppercase;
+                color: #fff;
+                background: #ccc;
+                border-radius: 3px;
+            }
+
+            div.slat-header h1 {
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                font-weight: 500;
+                line-height: 1.5;
+            }
+            div.screenshot-meta {
+                padding-left: 480px;
+                width: 250px;
+            }
+            ul.shot-stats>li {
+                position: relative;
+                width: 100%;
+                font-size: 13px;
+                line-height: 1;
+                border-bottom: 1px solid #ddd;
+                box-sizing: border-box;
+            }
+            ul.shot-stats>li .stats-action {
+                display: block;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                color: #999;
+                line-height: 22px;
+                box-sizing: border-box;
+            }
+            ul.shot-stats>li .stats-num {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 16px 14px;
+                color: #999;
+            }
+            ul.shot-stats>li .stats-action span.stats-label {
+                position: relative;
+                top: 2px;
+                margin-left: 5px;
+                line-height: 22px;
+            }
+            div.screenshot-conversation {
+                float: left;
+                width: 440px;
+            }
+            div.main-shot {
+                position: relative;
+                float: left;
+                width: 74.54545%;
+            }
+            div.the-shot {
+                float: left;
+                width: 440px;
+                position: relative;
+                z-index: 1;
+            }
+            div.the-shot div.single {
+                width: 400px;
+                min-height: 300px;
+                margin: 0 0 30px 0;
+                padding: 20px;
+                background: #fff;
+                border-radius: 3px;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+            }
+
+            ol.more-thumbs {
+                margin: 5px 0;
+                overflow: hidden;
+            }
+            ol.more-thumbs li {
+                max-height: 108px;
+            }
+
+            ol.more-thumbs li {
+                float: left;
+                width: 46%;
+                margin: 0 0 15px 0;
+            }
+            ol.more-thumbs li a {
+                display: inline-block;
+            }
+
+            .more-thumbs .similar {
+                width: 115px;
+                height: 86px;
+            }
+            ol.more-thumbs li a .similar {
+                width: 100%;
+                border-radius: 2px;
+                box-shadow: 0 1px 1px rgba(0,0,0,0.07);
+            }
+            .hoverable span {
+                box-sizing: border-box;
+                color: #999;
+                display: block;
+                font-size: 13px;
+                text-transform: lowercase;
+            }
+            #kbd-legend {
+                clear: both;
+            }
+            #kbd-legend p {
+                margin: 0;
+                padding: 30px 0 0 0;
+                font-size: 13px;
+                text-align: center;
+                color: #bbb;
+                border-top: 1px solid #ddd;
+                -webkit-transition: color 0.2s ease;
+                -moz-transition: color 0.2s ease;
+                -o-transition: color 0.2s ease;
+                transition: color 0.2s ease;
+            }
+            .form-btn, a.form-btn, div.comment-body form.comment button[type="cancel"] {
+                padding: 7px 12px;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-size: 13px;
+                font-weight: 500;
+                text-decoration: none;
+                color: #fff;
+                border: none;
+                background: rgba(0,0,0,0.3) url(../css/assets/button-glass-7bb3dc410ce448678c960eb0d83e2f33.png?1) repeat-x 0 0;
+                cursor: pointer;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                border-radius: 4px;
+            }
+            div.slat-header h2.shot-byline a {
+                margin: 0 2px;
+                font-weight: 500;
+            }
+            .attribution a.url {
+                text-transform: lowercase;
+            }
+            a:link, a:visited {
+                color: #3a8bbb;
+                text-decoration: none;
+            }
+            div.slat-header {
+                position: relative;
+                margin: 0 0 30px 0;
+                padding-left: 60px;
+                min-height: 48px;
+            }
             #footer {
                 border-top: 1px solid #e5e5e5;
                 clear: both;

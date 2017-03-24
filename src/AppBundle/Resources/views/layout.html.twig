@@ -77,13 +77,7 @@
                 <p class="about">Le moteur de recherche des annonces prix au maroc. Comparer les annonces dans plusieurs sites Voitures, Appartement, Immobilier ...</p>
             </div>
             <div class="footer-mod">
-                <ul class="extra-links">
-                    <li><a href="{{ url('list_annonces', {'ville': 'tous', 'tags': 'voitures', 'keys': 'mercedes'}) }}">Mercedes prix maroc</a></li>
-                    <li><a href="{{ url('list_annonces', {'ville': 'tous', 'tags': 'voitures'}) }}">Voitures au maroc</a></li>
-                    <li><a href="{{ url('list_annonces', {'ville': 'tous', 'tags': 'voitures', 'keys': 'focus'}) }}">Focus prix maroc</a></li>
-                    <li><a href="{{ url('list_annonces', {'ville': 'tous', 'tags': 'appartement'}) }}">Appartement maroc</a></li>
-                    <li><a href="{{ url('list_annonces', {'ville': 'tous', 'tags': 'villa'}) }}">Villa prix au maroc</a></li>
-                </ul>
+                {{ render(controller("AppBundle:Default:footer")) }}
             </div>
         </div>
         <p>Copyright Cherchi.ma Moteur de recherche des annonces au maroc.</p>
