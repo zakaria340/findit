@@ -88,7 +88,7 @@ Class Sarouty {
         'idSite'        => $data->getIdSites(),
         'title'         => trim($title),
         'description'   => trim($description),
-        'date'          => $date,
+        'date'          => ($date =='') ? time() : $date,
         'ville'         => array($idVille => $ville),
         'tags'          => $tags,
         'image'         => $pathNewImage,
