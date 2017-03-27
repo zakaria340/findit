@@ -264,3 +264,55 @@ ol.more-thumbs li {
     margin-top: 10px;
     font-size: 26px;
 }
+
+@media screen and (max-width: 539px) {
+    ol.dribbbles li.group, ol.collections li.group {
+        margin: 0 5px 20px 0 !important;
+        width: 160px !important;
+    }
+
+    #search select {
+        padding: 5px;
+    }
+
+    .autocomplete__hint, .autocomplete__input {
+        height: 30px;
+        line-height: 18px;
+        padding: 0 4px;
+        width: 100%;
+    }
+
+    #logo a {
+        margin-top: 0;
+    }
+    .autocomplete {
+        margin-right: 0 !important;
+    }
+}
+
+@media screen and (min-width: 540px) and (max-width: 641px){
+    #search select {
+        padding: 5px;
+    }
+    .autocomplete__hint, .autocomplete__input {
+        height: 30px;
+        line-height: 18px;
+        padding: 0 4px;
+        width: 100%;
+    }
+
+    #logo a {
+        margin-top: 0;
+    }
+    .autocomplete {
+        margin-right: 0 !important;
+    }
+}
+@media screen and (max-width: 958px){
+    #logo a {
+        margin-top: 0;
+    }
+    .autocomplete {
+        margin-right: 0 !important;
+    }
+}

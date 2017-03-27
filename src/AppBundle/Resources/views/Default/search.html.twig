@@ -6,12 +6,15 @@
         <li id="t-search">
             {{ form_start(form, {'action': path('homepage'), 'method': 'POST', 'attr': {'class': 'home__search search-form', 'id':'search'}}) }}
             {{ form_errors(form) }}
-            {{ form_widget(form.search, {'attr': {'class': 'autocomplete__submit'}}) }}
+            <button class="autocomplete__submit" name="search_form[search]" id="search_form_search" type="submit"></button>
             <div class="autocomplete">
                 {{ form_widget(form.text, {'attr': {'placeholder': 'Exp : Iphone, Mercedes, Appartement, Samsung ...','class': 'autocomplete__hint', 'id': 'home__hint'}}) }}
             </div>
             {{ form_widget(form.villes, {'attr': {'class': 'villes-select select-block-level white-border'}}) }}
             {{ form_widget(form.tags, {'attr': {'class': 'tags-select select-block-level white-border'}}) }}
+            <div style="display: none">
+                {{ form_widget(form.search, {'attr': {'class': 'autocomplete__submit'}}) }}
+            </div>
             {{ form_rest(form) }}
             {{ form_end(form) }}
         </li>

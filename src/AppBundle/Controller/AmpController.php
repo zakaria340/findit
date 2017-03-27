@@ -15,17 +15,16 @@ class AmpController extends Controller {
    * @Route("/amp", name="homepageamp")
    */
   public function indexampAction(Request $request) {
-    $ip = "92.3.2.10";//$_SERVER['REMOTE_ADDR'] $this->get_real_ip();
+    $ip = $this->get_real_ip();
     $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
 
     $city = 'casablanca';
     if ($query && $query['status'] == 'success') {
-      //$city = $this->clean($query['city']);
+      $city = $this->clean($query['city']);
     }
     $searchForm = $this->createForm(SearchForm::class);
 
     if ($request->isMethod('POST')) {
-      $this->forward('AppBundle:Default:list', $_POST);
       $searchForm->handleRequest($request);
       $data = $searchForm->getData();
       $params = array(
@@ -33,13 +32,17 @@ class AmpController extends Controller {
         'tags'  => !is_null($data['tags']) ? str_replace(' ', '-', $data['tags']->getSlug()) : 'tous',
         'keys'  => str_replace(' ', '-', $data['text']),
       );
-      $response = $this->redirectToRoute('list_annonces', $params);
-      return $response;
+      return $this->redirect($this->generateUrl('list_annonces', $params));
     }
+
+    $em = $this->getDoctrine()->getManager();
+    $randomAnnonces = $em->getRepository('AppBundle:Annonces')->RandomAnnonces($city);
+
     return $this->render(
       'AppBundle:Amp:indexamp.html.twig', array(
         'form' => $searchForm->createView(),
         'city' => $city,
+        'randomAnnonces' => $randomAnnonces
       )
     );
 
