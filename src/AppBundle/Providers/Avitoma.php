@@ -89,18 +89,18 @@ Class Avitoma {
    */
   public function fetchALLAnnonces() {
     $site = $this->em->getRepository('AppBundle:Sites')->find(1);
-    $villes = $this->getjsonFromUrl('http://www.avito.ma/templates/api/confregions.js?v=3');
     $categories = array(
       array('id' => 5010, 'name' => 'Téléphones'),
       array('id' => 5080, 'name' => 'Tablettes'),
-
       array('id' => 5030, 'name' => 'Ordinateurs portables'),
       array('id' => 2010, 'name' => 'Voitures'),
       array('id' => 2030, 'name' => 'Motos'),
       );
-    foreach ($villes->regions as $ville) {
+
+    $villes = array('id' => 5, 'id' => 12, 'id' => 13, 'id' => 15, 'id' => 8);
+    foreach ($villes as $ville) {
       foreach ($categories as $category) {
-        $url_annonces = 'http://www.avito.ma/lij?fullad=1&q=&w=112&ca=' . $ville->id . '_s&cg=' . $category['id']
+        $url_annonces = 'http://www.avito.ma/lij?fullad=1&q=&w=112&ca=' . $ville['id'] . '_s&cg=' . $category['id']
           . '&st=s';
         $annonces = $this->getjsonFromUrl($url_annonces);
         foreach ($annonces->list_ads as $annonce) {

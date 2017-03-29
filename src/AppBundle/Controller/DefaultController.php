@@ -67,13 +67,12 @@ class DefaultController extends Controller {
       $form->get('villes')->setData($villes);
     }
 
-
-    $tags = $em->getRepository(
+    $tagss = $em->getRepository(
       'AppBundle:Tags'
-    )->findOneBy(array('slug' => $ville));
-    if ($tags) {
-      $tags = $em->getReference("AppBundle:Tags", $tags->getIdVilles());
-      $form->get('tags')->setData($tags);
+    )->findOneBy(array('slug' => $tags));
+    if ($tagss) {
+      $tagss = $em->getReference("AppBundle:Tags", $tagss->getIdTags());
+      $form->get('tags')->setData($tagss);
     }
 
     return $this->render(
@@ -83,6 +82,11 @@ class DefaultController extends Controller {
     );
   }
 
+  /**
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
   public function footerAction(Request $request) {
     $em = $this->getDoctrine()->getManager();
     $tags = $em->getRepository(

@@ -19,38 +19,37 @@ class SearchForm extends AbstractType {
    */
   public function buildForm(FormBuilderInterface $builder, array $options) {
     $builder->add(
-        'text', TextType::class, array(
+      'text', TextType::class, array(
         'required' => FALSE,
         'label'    => '',
       )
-      )->add(
-        'tags', EntityType::class, array(
-        'class' => 'AppBundle:Tags',
-
+    )->add(
+      'tags', EntityType::class, array(
+        'class'         => 'AppBundle:Tags',
         'query_builder' => function (EntityRepository $er) {
           return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');
         },
         'choice_label'  => 'name',
-        'required' => FALSE,
-        'placeholder' => 'Tous les catégorie',
+        'required'      => FALSE,
+        'placeholder'   => 'Tous les catégorie',
         'multiple'      => FALSE,
       )
-      )->add(
-        'villes', EntityType::class, array(
+    )->add(
+      'villes', EntityType::class, array(
         'class'         => 'AppBundle:Villes',
         'query_builder' => function (EntityRepository $er) {
           return $er->createQueryBuilder('u')->orderBy('u.name', 'ASC');
         },
         'choice_label'  => 'name',
-        'required' => FALSE,
-        'placeholder' => 'Toute les villes',
+        'required'      => FALSE,
+        'placeholder'   => 'Toute les villes',
         'multiple'      => FALSE,
       )
-      )->add(
-        'search', SubmitType::class, array(
+    )->add(
+      'search', SubmitType::class, array(
         'label' => FALSE,
       )
-      );
+    );
 
   }
 
