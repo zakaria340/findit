@@ -97,7 +97,7 @@ Class Avitoma {
       array('id' => 2030, 'name' => 'Motos'),
       );
 
-    $villes = array('id' => 5, 'id' => 12, 'id' => 13, 'id' => 15, 'id' => 8);
+    $villes = array(array('id' => 5), array('id' => 12), array('id' => 13), array('id' => 15), array('id' => 8));
     foreach ($villes as $ville) {
       foreach ($categories as $category) {
         $url_annonces = 'http://www.avito.ma/lij?fullad=1&q=&w=112&ca=' . $ville['id'] . '_s&cg=' . $category['id']
