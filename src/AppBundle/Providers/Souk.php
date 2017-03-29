@@ -1,27 +1,33 @@
 <?php
 
-use Imagecow\Image;
+namespace AppBundle\Providers;
+
+use Sunra\PhpSimple\HtmlDomParser;
 
 Class Souk {
 
   public $_baseUrl = '';
-  public $_db;
+  protected $em;
+  protected $sphinx;
 
-  public function __construct($db) {
-    $this->_db = $db;
+  public function __construct($em, $sphinx) {
+    $this->em = $em;
+    $this->sphinx = $sphinx;
   }
 
   public function getData($url, $data) {
     $s = preg_match_all('/fr\/(.*)_/', $url, $matches);
     $annonceID = $matches[1][0];
 
-    $sphinx = new Sphinx($this->_db);
-    $d = $sphinx->checkAnnoncebyUrl($url);
+    /**
+     * Check if Annonce exist.
+     */
+    $d = $this->sphinx->checkAnnoncebyUrl($url);
     if (!empty($d)) {
       return array();
     }
 
-    $html = file_get_html($url);
+    $html = HtmlDomParser::file_get_html($url);
     $dataToSave = array();
 
     if ($html && $html->find('h1', 0)) {
@@ -29,7 +35,6 @@ Class Souk {
       $title = $html->find('h1', 0)->plaintext;
       $title = strip_tags($title);
       $title = trim($title);
-      $date = '';
       $date = $html->find('.annonce .date span', 0)->plaintext;
       $date = str_replace('Publié le: ', '', $date);
       $date = str_replace('/', '-', $date);
@@ -38,22 +43,30 @@ Class Souk {
       if ($html->find('.annonce .price span', 0)) {
         $prix = trim($html->find('.annonce .price span', 0)->plaintext);
         $prix = str_replace('Dhs', '', $prix);
+        $prix = str_replace('DH', '', $prix);
         $prix = trim($prix);
       }
-      $imageUnique='';
       if ($html->find('.annonce .adphoto img', 0)) {
         $image = trim($html->find('.annonce .adphoto img', 0)->src);
-        $imageUnique = Utilities::resizeandsave($image, $data['idSites']);
+        $imageUnique = md5(time() . 6 . $annonceID) . '.jpg';
+        $pathNewImage = $this->sphinx->resizeandsave($image, $data->getIdSites(), $imageUnique);
+      } else {
+        return array();
       }
       if ($html->find('.annonce .date span', 1)) {
         $ville = $html->find('.annonce .date span', 1)->plaintext;
         $ville = trim($ville);
         $ville = explode(' ', $ville);
         $ville = trim($ville[0]);
-        $idVille = Utilities::getVille($ville);
+        $idVille = $this->sphinx->getVille(trim($ville));
+
       }
       if ($html->find('.breadcrumb li', 2)) {
-        $tags = Utilities::getTags(array($html->find('.breadcrumb li', 2)->plaintext));
+        $tag = trim($html->find('.breadcrumb li', 2)->plaintext);
+        if($tag == 'Appartements') {
+          $tag = 'Appartement';
+        }
+        $tags = $this->sphinx->getTags(array($tag));
       }
       $extraKeywords = array();
       foreach ($html->find('#colonne-gauche-bloc-annonce table tr') as $liinfo) {
@@ -68,15 +81,15 @@ Class Souk {
         $description = $html->find('.desc-text p', 0)->plaintext;
       }
       $dataToSave = array(
-        'idSphinx' => $data['prefix'] . $annonceID,
+        'idSphinx' => $data->getPrefix() . $annonceID,
         'idAnnonce' => $annonceID,
-        'idSite' => $data['idSites'],
+        'idSite' => $data->getIdSites(),
         'title' => trim($title),
         'description' => trim($description),
         'date' => $date,
         'ville' => array($idVille => $ville),
         'tags' => $tags,
-        'image' => $imageUnique,
+        'image' => $pathNewImage,
         'prix' => $prix,
         'url' => $url,
         'extraKeywords' => $extraKeywords
@@ -86,19 +99,25 @@ Class Souk {
   }
 
   public function fetchALLAnnonces($nbr) {
-    $sitesTable = new \Zend\Db\TableGateway\TableGateway('sites', $this->_db);
-    $sphinx = new Sphinx($this->_db);
-    $rowset = $sitesTable->select(array('idSites' => 6));
-    $data = $rowset->current();
-
+    $site = $this->em->getRepository('AppBundle:Sites')->find(6);
     for ($i = 1; $i <= $nbr; $i++) {
-      $listpagehtml = file_get_html('http://www.souk.ma/fr/Maroc/&q=&p=' . $i);
+      $listpagehtml = HtmlDomParser::file_get_html('http://www.souk.ma/fr/Maroc/immobilier/&q=&period=semaine&p=' . $i);
       foreach ($listpagehtml->find('.results .item') as $item) {
         $link = $item->find('a', 0)->href;
-        $dataToSave = $this->getData($link, $data);
+        $dataToSave = $this->getData($link, $site);
         if (!empty($dataToSave)) {
-         $sphinx->SaveToSphinx($dataToSave);
+          $this->sphinx->SaveToSphinx($dataToSave);
         } 
+      }
+    }
+    for ($i = 1; $i <= $nbr; $i++) {
+      $listpagehtml = HtmlDomParser::file_get_html('http://www.souk.ma/fr/Maroc/immobilier/&q=&period=semaine&p=' . $i);
+      foreach ($listpagehtml->find('.results .item') as $item) {
+        $link = $item->find('a', 0)->href;
+        $dataToSave = $this->getData($link, $site);
+        if (!empty($dataToSave)) {
+          $this->sphinx->SaveToSphinx($dataToSave);
+        }
       }
     }
   }

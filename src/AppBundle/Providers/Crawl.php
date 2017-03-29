@@ -59,9 +59,18 @@ Class Crawl {
     }
 
     if ($provider == 'avitoma') {
-
       $avito = new Avitoma($this->em, $this->sphinx);
       $avito->fetchALLAnnonces($nbr);
+    }
+
+    if ($provider == 'soukma') {
+      $avito = new Souk($this->em, $this->sphinx);
+      $avito->fetchALLAnnonces($nbr);
+    }
+
+    if ($provider == 'voituresaumaroc') {
+      $voitureaumaroc = new Voituresaumaroc($this->em, $this->sphinx);
+      $voitureaumaroc->fetchALLAnnonces($nbr);
     }
   }
 }
