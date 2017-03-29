@@ -34,6 +34,8 @@ class AnnoncesRepository extends \Doctrine\ORM\EntityRepository {
 
     $qb->where("a.idAnnonces IN(:ids)");
     $qb->setParameter('ids', $ids_count);
+    $qb->orderBy('a.date', 'DESC');
+    $qb->orderBy('a.prix', 'DESC');
 
     $query = $qb->getQuery();
     $premierResultat = ($page - 1) * $nbMaxParPage;
