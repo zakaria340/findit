@@ -316,3 +316,81 @@ ol.more-thumbs li {
         margin-right: 0 !important;
     }
 }
+
+.filter-price {
+  width: 20%;
+    float: right;
+    display: inline;
+}
+
+
+.advanced-filters ol.dribbbles li.group, .advanced-filters ol.collections li.group {
+    width: auto;
+    margin-right:10px !important;
+    max-width: 50%;
+
+}
+
+.advanced-filters .dribbble {
+    padding: 1px;
+}
+
+.advanced-filters ol.dribbbles li div.dribbble, .advanced-filters ol.collections li div.dribbble {
+    background: none;
+}
+
+.count {
+    color: #bbb;
+    margin: 0 0 0 2px;
+}
+.go-pro h2 a.form-sub {
+    color: #fff;
+    margin: 0 4px 0 0;
+}
+
+.advanced-filters .singleAnnonce .active, .advanced-filters .singleAnnonce .active .count {
+  margin: 0 4px 0 0;
+  color: #FFF;
+  background: #666 url("/assets/button-glass-861b265bf67caff1d6e613ca1758ce443b59d676cb7fceca293a9891aef250a8.png") repeat-x scroll 0 0;
+}
+
+@media screen and (max-width: 958px) {
+    .trends__item, .trends__item:nth-child(2n) {
+        width: 48%;
+        max-height: 180px;
+    }
+
+    .trends__item, .trends__item:nth-child(2n) {
+        max-height: 180px;
+    }
+
+    .trends {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .randomAnnonces ol.dribbbles li.group, ol.collections li.group {
+        margin: 0 5px 5px 0 !important;
+    }
+    .randomAnnonces {
+        width: 100%;
+    }
+
+    .advanced-filters ol.dribbbles li.group, .advanced-filters ol.collections li.group {
+        width: 100% !important;
+        margin-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .advanced-filters ol.dribbbles, ol.collections {
+        max-width: 750px;
+    }
+
+
+}
+
+@media screen and (max-width: 540px) {
+    .trends__item, .trends__item:nth-child(2n) {
+        width: 96%;
+    }
+}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr-MA">
 <head>
     <meta charset="utf-8">
     {#<script async src="https://cdn.ampproject.org/v0.js"></script>#}
@@ -36,6 +36,9 @@
 
     {% block stylesheets %}
         <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ asset('css/ion.rangeSlider.css') }}" type="text/css"/>
+        <link rel="stylesheet" href="{{ asset('css/ion.rangeSlider.skinNice.css') }}" type="text/css"/>
+
         <link rel="stylesheet" type="text/css" href="{{ asset('css/index2.css') }}" media="all">
         <link rel="stylesheet" media="screen, projection" href="{{ asset('css/master.css') }}"/>
         <link rel="stylesheet" media="screen, projection" href="{{ asset('css/infinite.css') }}"/>
@@ -46,6 +49,7 @@
     {% block javascript %}
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
       <script src="{{ asset('js/masonry.js') }}"></script>
+       <script src="{{ asset('js/ion.rangeSlider.min.js') }}"></script>
       <script src="{{ asset('js/main.js') }}"></script>
     {% endblock %}
 

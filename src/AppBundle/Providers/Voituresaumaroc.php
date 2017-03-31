@@ -74,6 +74,22 @@ Class Voituresaumaroc {
       $tags = $this->sphinx->getTags(array('Voitures'));
       $extraKeywords = array();
 
+      if ($html->find('.plist-breadcrumbs-right a', 0)) {
+        $daextra = array(
+          'label' => 'Marque',
+          'value' => trim($html->find('.plist-breadcrumbs-right a', 0)->plaintext),
+        );
+        array_push($extraKeywords, $daextra);
+      }
+
+      if ($html->find('.plist-breadcrumbs-right a', 1)) {
+        $daextra = array(
+          'label' => 'Modèle',
+          'value' => trim($html->find('.plist-breadcrumbs-right a', 1)->plaintext),
+        );
+        array_push($extraKeywords, $daextra);
+      }
+
       foreach ($html->find('.product-fields-others .product-fields') as $liinfo) {
 
         $keywords = trim(strip_tags($liinfo->plaintext));

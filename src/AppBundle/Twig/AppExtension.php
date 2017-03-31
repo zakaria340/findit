@@ -15,6 +15,7 @@ class AppExtension extends \Twig_Extension {
     return array(
       new \Twig_SimpleFilter('GenerateSlug', array($this, 'slugFilter')),
       new \Twig_SimpleFilter('SiteInfos', array($this, 'siteInfos')),
+      new \Twig_SimpleFilter('ArrayUnset', array($this, 'arrayunsetFilter'))
     );
   }
 
@@ -25,6 +26,12 @@ class AppExtension extends \Twig_Extension {
   public function siteInfos($siteId) {
     $site = $this->em->getRepository('AppBundle:Sites')->find($siteId);
     return $site;
+  }
+
+  public function arrayunsetFilter($array, $key)
+  {
+    unset($array[$key]);
+    return $array;
   }
 
   public function getName() {

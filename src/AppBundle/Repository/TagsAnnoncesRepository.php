@@ -10,4 +10,39 @@ namespace AppBundle\Repository;
  */
 class TagsAnnoncesRepository extends \Doctrine\ORM\EntityRepository
 {
+
+  /**
+   * @param $idAnnonces
+   *
+   * @return mixed
+   */
+  public function findAnnonces($idAnnonces) {
+    $qb = $this->createQueryBuilder('a');
+    $qb->where("a.idAnnonce IN(:ids)");
+    $qb->setParameter('ids', $idAnnonces);
+    $query = $qb->getQuery();
+    return $query->execute();
+  }
+
+
+  /**
+   * @param $params
+   * @param $ids_count
+   *
+   * @return mixed
+   */
+  public function filterAnnonces($params, $ids_count) {
+    $qb = $this->createQueryBuilder('a');
+    $qb->where("a.idAnnonce IN(:ids)");
+
+    foreach($params as $param) {
+      $qb->andWhere("a.Value = (:param)");
+      $qb->setParameter('param', $param);
+    }
+
+    $qb->setParameter('ids', array_values($ids_count));
+    $query = $qb->getQuery();
+    return $query->execute();
+  }
+
 }

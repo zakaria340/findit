@@ -18,4 +18,12 @@ class CronController extends Controller {
     $crawl->CrawlOn($provider, $nbr);
   }
 
+  /**
+   * @Route("/cronupextratags", name="cronupextratags")
+   */
+  public function upextratagsAction(Request $request) {
+    $crawl = $this->container->get('appbundle.crawl');
+    $crawl->UpExtraTags();
+  }
+
 }

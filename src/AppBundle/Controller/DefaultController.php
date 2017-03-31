@@ -40,9 +40,9 @@ class DefaultController extends Controller {
 
     return $this->render(
       'AppBundle:Default:index.html.twig', array(
-        'form' => $searchForm->createView(),
-        'city' => $city,
-        'randomAnnonces' => $randomAnnonces
+        'form'           => $searchForm->createView(),
+        'city'           => $city,
+        'randomAnnonces' => $randomAnnonces,
       )
     );
 
@@ -118,8 +118,8 @@ class DefaultController extends Controller {
     $annoncesSimilar = $em->getRepository('AppBundle:Annonces')->findAllSimilar($ville, $annonce->getTags());
     return $this->render(
       'AppBundle:Default:detail.html.twig', array(
-        'annonce' => $annonce,
-        'annoncesSimilar' => $annoncesSimilar
+        'annonce'         => $annonce,
+        'annoncesSimilar' => $annoncesSimilar,
       )
     );
   }
@@ -134,10 +134,25 @@ class DefaultController extends Controller {
     $page = $request->get('page', 1);
     $conn = $this->getSphinxQLConx();
     $query = SphinxQL::create($conn)->select('*')->from('annonces11');
+    $listTagsToDisplayniveau1 = array(
+      'marque',
+      'modele',
+      'b.-de-vitesses',
+      'carburant',
+      'nombre-de-portes',
+      'carrosserie',
+      '1ere-main',
+      'pieces',
+      'salles-de-bains',
+      'type',
+      'annee',
+      'puissance-fiscale'
+    );
 
+    $queryparams = $request->query->all();
     if (!is_null($keys) && $keys != '') {
       $keysarray = explode('-', $keys);
-      foreach($keysarray as $a) {
+      foreach ($keysarray as $a) {
         $query->match(array('title', 'description', 'tags', 'ville'), $a);
       }
     }
@@ -156,6 +171,14 @@ class DefaultController extends Controller {
     }
     $nbArticlesParPage = 25;
     $em = $this->getDoctrine()->getManager();
+
+    if (!empty($queryparams)) {
+      $annoncesfiltred = $em->getRepository('AppBundle:TagsAnnonces')->filterAnnonces($queryparams, $ids_count);
+      $ids_count = array();
+      foreach ($annoncesfiltred as $annoncefilt) {
+        $ids_count[] = $annoncefilt->getIdAnnonce();
+      }
+    }
     $annonces = $em->getRepository('AppBundle:Annonces')->findAllPagineEtTrie($page, $nbArticlesParPage, $ids_count);
 
     $pagination = array(
@@ -165,16 +188,31 @@ class DefaultController extends Controller {
       'paramsRoute' => array('ville' => $ville, 'tags' => $tags, 'keys' => $keys),
     );
 
+    $TagsAnnonces = array();//$em->getRepository('AppBundle:TagsAnnonces')->findAnnonces($ids_count);
+    $listTags = [];
+    foreach ($TagsAnnonces as $tagAnnonce) {
+      if (($tags != 'tous' || $keys != '') and in_array($tagAnnonce->getidTags()->getSlug(), $listTagsToDisplayniveau1)) {
+        if (!isset($listTags[$tagAnnonce->getidTags()->getSlug()])) {
+          $listTags[$tagAnnonce->getidTags()->getSlug()] = array(
+            'title' => $tagAnnonce->getidTags()->getTitle(),
+            'slug'  => $tagAnnonce->getidTags()->getSlug(),
+          );
+        }
+        $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()] = $tagAnnonce->getValue();
+      }
+    }
     return $this->render(
       'AppBundle:Default:list.html.twig', array(
-        'annonces'   => $annonces,
-        'pagination' => $pagination,
-        'arguments'  => array(
+        'annonces'      => $annonces,
+        'pagination'    => $pagination,
+        'arguments'     => array(
           'ville' => str_replace('-', ' ', $ville),
           'tags'  => str_replace('-', ' ', $tags),
           'keys'  => str_replace('-', ' ', $keys),
         ),
-        'countAnnonces' => $annonces->count()
+        'queryparams'   => $queryparams,
+        'countAnnonces' => $annonces->count(),
+        'listTags'      => $listTags,
       )
     );
   }

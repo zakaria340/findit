@@ -7,32 +7,70 @@
 {% block title %}Cherchi.ma - Les annonces {{ arguments.tags }} au {{ arguments.ville }} Maroc{% endblock %}
 
 {% block metadescription %}
-<meta name="description" content="
+    <meta name="description" content="
 Comparer les annonces {{ arguments.tags }} {{ arguments.keys }} au maroc {{ arguments.ville }}. le meilleur prix des annonces {{ arguments.tags }} au maroc dans plusieurs sites
 d'annonces et comparer les prix au Maroc du même article."/>
 {% endblock %}
 
 {% block canonical_rel %}
-    <link rel="amphtml" href="{{ url('list_annoncesamp', arguments) }}">
+    <link rel="canonical" href="{{ url('list_annonces', arguments) }}">
 {% endblock %}
 
 
 {% block topHeader %}
-<div class="full-pitch group">
-    <h1>
-       Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
-        <strong>Prix {{ arguments.ville }} Maroc</strong>
-    </h1>
-</div>
+    <div class="full-pitch group">
+        <h1>
+            Comparer tous les annonces de {{ arguments.tags }} {{ arguments.keys }}
+            <strong>Prix {{ arguments.ville }} Maroc</strong>
+        </h1>
+    </div>
 {% endblock %}
 {% block body %}
+    {% if listTags is not empty %}
+    <div class="full-tabs advanced-filters">
+        <ol class="group advanced-filters-collections collections ">
+            <div class="profile-info-mod">
+                {#       <li class="group singleAnnonce">
+                       <div class="filter-price">
+                           <input type="text" id="price_comparator" name="example_name" value=""/>
+                       </div>
+                           </li>#}
+
+                    {% for listTag in listTags %}
+                        <li class="group">
+                            <div class="dribbble">
+                                <h3> {{ listTag.title }} </h3>
+                                <div class="skills">
+                                    {% for listTagchoice in listTag.choices %}
+                                        {% set argumentss = arguments|merge(queryparams) %}
+                                        {% if (listTag.slug|GenerateSlug) not in argumentss %}
+                                            {% set argumentss = argumentss|merge({ (listTag.slug|GenerateSlug) : listTagchoice}) %}
+                                        {% endif %}
+
+                                        {% if listTagchoice in queryparams %}
+                                            {% set argumentss = (argumentss|ArrayUnset(listTag.slug|GenerateSlug)) %}
+                                            <a class="active"
+                                               href="{{ url('list_annonces', argumentss) }}"><strong>#{{ listTagchoice }} <span class="count">( {{ listTag.count }} )</span></strong></a>
+                                        {% else %}
+                                            <a href="{{ url('list_annonces', argumentss) }}">#{{ listTagchoice }} <span class="count">( 5 )</span></a>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+
+            </div>
+        </ol>
+    </div>
+    {% endif %}
     {% if annonces is not empty %}
         <h2 class="section">
             {{ countAnnonces }} Annonces trouvées
         </h2>
     {% endif %}
-
-    <ol class="group collections ">
+    <ol class="group annonces collections ">
         {% if annonces is not empty %}
             {% for annonce in annonces %}
                 <li class="group singleAnnonce" id="screenshot-{{ annonce.idAnnonces }}">

@@ -65,6 +65,23 @@ Class Moteur {
       $tags =  $this->sphinx->getTags(array('Voitures'));
 
       $extraKeywords = array();
+
+      if ($html->find('.breadcrumb li', 2)) {
+        $daextra = array(
+          'label' => 'Marque',
+          'value' => trim($html->find('.breadcrumb li', 2)->plaintext),
+        );
+        array_push($extraKeywords, $daextra);
+      }
+
+      if ($html->find('.breadcrumb li', 3)) {
+        $daextra = array(
+          'label' => 'Modèle',
+          'value' => trim($html->find('.breadcrumb li', 3)->plaintext),
+        );
+        array_push($extraKeywords, $daextra);
+      }
+
       foreach ($html->find('.car-detail .col-md-8 .row .detail_line') as $liinfo) {
         if ($liinfo->find('span', 1)) {
           $dataitem = array('label' => $liinfo->find('span', 0)->plaintext,

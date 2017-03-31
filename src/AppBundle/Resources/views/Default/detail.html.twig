@@ -11,7 +11,7 @@ au maroc dans plusieurs sites d'annonces au Maroc rapidement et comparer les pri
 {% endblock %}
 
 {% block canonical_rel %}
-    <link rel="amphtml" href="{{ url('detail_annoncesamp', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}">
+    <link rel="canonical" href="{{ url('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}">
 {% endblock %}
 {% block body %}
     <div class="shot-overlay" style="" tabindex="-1">

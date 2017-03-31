@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Tags
  *
- * @ORM\Table(name="tagsannonces")
+ * @ORM\Table(name="tagsAnnonces")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TagsAnnoncesRepository")
  */
 class TagsAnnonces {
@@ -32,17 +32,15 @@ class TagsAnnonces {
 
 
   /**
-   * @var string
-   *
-   * @ORM\Column(name="idTags", type="string", length=255)
+   * @ORM\OneToOne(targetEntity="AppBundle\Entity\TagsExtra", cascade={"persist"})
+   * @ORM\JoinColumn(name="idTags", referencedColumnName="idTagsExtra")
    */
-
   private $idTags;
 
   /**
    * @var string
    *
-   * @ORM\Column(name="name", type="string", length=255)
+   * @ORM\Column(name="value", type="string", length=255)
    */
 
   private $Value;

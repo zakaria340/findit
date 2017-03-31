@@ -78,6 +78,21 @@ Class Wandaloo {
       $cat1 = trim('Voitures');
       $tags = $this->sphinx->getTags(array($cat1));
       $extraKeywords = array();
+      if ($html->find('.breadcrumb a', 2)) {
+        $daextra = array(
+          'label' => 'Marque',
+          'value' => trim($html->find('.breadcrumb a', 2)->plaintext),
+        );
+        array_push($extraKeywords, $daextra);
+      }
+
+      if ($html->find('.breadcrumb a', 3)) {
+        $daextra = array(
+          'label' => 'Modèle',
+          'value' => trim($html->find('.breadcrumb a', 3)->plaintext),
+        );
+        array_push($extraKeywords, $daextra);
+      }
 
       foreach ($html->find('#sommaire li') as $liinfo) {
         $dataitem = array(

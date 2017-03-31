@@ -73,4 +73,16 @@ Class Crawl {
       $voitureaumaroc->fetchALLAnnonces($nbr);
     }
   }
+
+  public function UpExtraTags() {
+    $annonces = $this->em->getRepository('AppBundle:Annonces')->findAll();
+    foreach ($annonces as $annonce) {
+      $extrakeywords = $annonce->getExtraKeywords();
+      if (!is_null($extrakeywords)) {
+        $tagsExtra = json_decode($extrakeywords, TRUE);
+        $this->sphinx->getTagsAnnonces($tagsExtra, $annonce->getIdAnnonces());
+      }
+
+    }
+  }
 }

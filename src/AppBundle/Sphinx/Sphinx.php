@@ -9,6 +9,7 @@ use AppBundle\Entity\Villes;
 use AppBundle\Entity\Tags;
 use AppBundle\Entity\TagsAnnonces;
 use AppBundle\Entity\Annonces;
+use AppBundle\Entity\TagsExtra;
 
 Class Sphinx {
 
@@ -72,6 +73,12 @@ Class Sphinx {
     $this->em->persist($annonce);
     $this->em->flush();
     $idAnnonce = $annonce->getIdAnnonces();
+
+
+    /*
+     * Save extra keywords.
+     */
+    $this->getTagsAnnonces($data['extraKeywords'], $idAnnonce);
 
     /**
      * Sphinx Insert
@@ -144,25 +151,28 @@ Class Sphinx {
    * @return bool
    */
   public function getTagsAnnonces($tagsExtra, $idAnnonce) {
-    $tagRepo = $this->em->getRepository('AppBundle:Tags');
+
+    $tagAnnonces = $this->em->getRepository('AppBundle:TagsAnnonces');
+    $tagsExtraEntity = $this->em->getRepository('AppBundle:TagsExtra');
     foreach ($tagsExtra as $tag) {
-      $cleanString = $this->clean($tag['label']);
-      $tagEntity = $tagRepo->findOneBy(array('slug' => $cleanString));
-      if (!$tagEntity) {
-        $tagEntity = new Tags();
-        $tagEntity->setName($tag['label']);
-        $tagEntity->setSlug($tag['value']);
-        $this->em->persist($tagEntity);
+      if(isset($tag['label']) && isset($tag['value'])) {
+        $cleanString = $this->clean(trim($tag['label']));
+        $tagExtra = $tagsExtraEntity->findOneBy(array('slug' => $cleanString));
+        if (!$tagExtra) {
+          $tagExtra = new TagsExtra();
+          $tagExtra->setSlug($cleanString);
+          $tagExtra->setTitle(trim($tag['label']));
+          $this->em->persist($tagExtra);
+          $this->em->flush();
+        }
+
+        $tagAnnonce = new TagsAnnonces();
+        $tagAnnonce->setIdAnnonce($idAnnonce);
+        $tagAnnonce->setIdTags($tagExtra);
+        $tagAnnonce->setValue($tag['value']);
+        $this->em->persist($tagAnnonce);
         $this->em->flush();
       }
-
-      $tagAnnonce = new TagsAnnonces();
-      $tagAnnonce->setIdAnnonce($idAnnonce);
-      $tagAnnonce->setIdTags($tagEntity->getIdTags());
-      $tagAnnonce->setValue($tag['value']);
-      $this->em->persist($tagAnnonce);
-      $this->em->flush();
-
     }
     return TRUE;
   }

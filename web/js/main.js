@@ -3,7 +3,11 @@
  */
 
 $(document).ready(function() {
-  new Masonry('ol.collections', {
+  new Masonry('ol.annonces', {
     itemSelector: '.group'
+  });
+
+  new Masonry('ol.advanced-filters-collections', {
+    itemSelector: '.singleAnnonce'
   });
 })
