@@ -72,7 +72,7 @@ form.select-sort-form, form.find-players-sort {
     background-color: #3a8bbb !important;
 }
 #wrap{
-    padding: 30px 20px 40px;
+
 }
 
 div.search-extra ol.search-extra-list li a {
@@ -393,4 +393,25 @@ ol.more-thumbs li {
     .trends__item, .trends__item:nth-child(2n) {
         width: 96%;
     }
+}
+.counts-nbr {
+    color: #444 !important;
+    font-size: 24px  !important;
+    font-weight: 500  !important;
+    letter-spacing: -0.02em  !important;
+}
+
+.advanced-filterss .listed .active {
+    background-color: #eee;
+}
+
+.current-tags a.current-tag {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #444;
+    display: inline-block;
+    margin: 0 4px 8px 0;
+    padding: 6px 8px;
+    font-size: 14px;
+    background-color: #eee;
 }

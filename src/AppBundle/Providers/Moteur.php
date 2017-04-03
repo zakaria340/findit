@@ -84,7 +84,7 @@ Class Moteur {
 
       foreach ($html->find('.car-detail .col-md-8 .row .detail_line') as $liinfo) {
         if ($liinfo->find('span', 1)) {
-          $dataitem = array('label' => $liinfo->find('span', 0)->plaintext,
+          $dataitem = array('label' => trim($liinfo->find('span', 0)->plaintext),
             'value' => trim($liinfo->find('span', 1)->plaintext));
           array_push($extraKeywords, $dataitem);
         }
@@ -138,6 +138,44 @@ Class Moteur {
         }
       }
     }
+  }
+
+
+  /**
+   * @param $annonce
+   */
+  public function upextratags($annonce) {
+    $url = $annonce->getUrl();
+    $html = HtmlDomParser::file_get_html($url);
+    $extraKeywords = array();
+
+    if ($html->find('.breadcrumb li', 2)) {
+      $daextra = array(
+        'label' => 'Marque',
+        'value' => trim($html->find('.breadcrumb li', 2)->plaintext),
+      );
+      array_push($extraKeywords, $daextra);
+    }
+
+    if ($html->find('.breadcrumb li', 3)) {
+      $daextra = array(
+        'label' => 'Modèle',
+        'value' => trim($html->find('.breadcrumb li', 3)->plaintext),
+      );
+      array_push($extraKeywords, $daextra);
+    }
+
+    foreach ($html->find('.car-detail .col-md-8 .row .detail_line') as $liinfo) {
+      if ($liinfo->find('span', 1)) {
+        $dataitem = array('label' => trim($liinfo->find('span', 0)->plaintext),
+                          'value' => trim($liinfo->find('span', 1)->plaintext));
+        array_push($extraKeywords, $dataitem);
+      }
+    }
+    $extraKeywords = json_encode($extraKeywords);
+    $annonce->setExtraKeywords($extraKeywords);
+    $this->em->persist($annonce);
+    $this->em->flush();
   }
 
 }

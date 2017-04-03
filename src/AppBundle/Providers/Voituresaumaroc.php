@@ -146,4 +146,45 @@ Class Voituresaumaroc {
     }
   }
 
+  /**
+   * @param $annonce
+   */
+  public function upextratags($annonce) {
+    $url = $annonce->getUrl();
+    $html = HtmlDomParser::file_get_html($url);
+    $extraKeywords = array();
+
+    if ($html->find('.plist-breadcrumbs-right a', 0)) {
+      $daextra = array(
+        'label' => 'Marque',
+        'value' => trim($html->find('.plist-breadcrumbs-right a', 0)->plaintext),
+      );
+      array_push($extraKeywords, $daextra);
+    }
+
+    if ($html->find('.plist-breadcrumbs-right a', 1)) {
+      $daextra = array(
+        'label' => 'Modèle',
+        'value' => trim($html->find('.plist-breadcrumbs-right a', 1)->plaintext),
+      );
+      array_push($extraKeywords, $daextra);
+    }
+
+    foreach ($html->find('.product-fields-others .product-fields') as $liinfo) {
+
+      $keywords = trim(strip_tags($liinfo->plaintext));
+      $keywords = explode(':', $keywords);
+      $dataitem = array(
+        'label' => $keywords[0],
+        'value' => trim(strip_tags($keywords[1])),
+      );
+      array_push($extraKeywords, $dataitem);
+    }
+    
+    $extraKeywords = json_encode($extraKeywords);
+    $annonce->setExtraKeywords($extraKeywords);
+    $this->em->persist($annonce);
+    $this->em->flush();
+  }
+
 }

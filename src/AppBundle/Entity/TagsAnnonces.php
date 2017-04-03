@@ -32,7 +32,7 @@ class TagsAnnonces {
 
 
   /**
-   * @ORM\OneToOne(targetEntity="AppBundle\Entity\TagsExtra", cascade={"persist"})
+   * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TagsExtra")
    * @ORM\JoinColumn(name="idTags", referencedColumnName="idTagsExtra")
    */
   private $idTags;

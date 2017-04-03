@@ -34,13 +34,12 @@ class TagsAnnoncesRepository extends \Doctrine\ORM\EntityRepository
   public function filterAnnonces($params, $ids_count) {
     $qb = $this->createQueryBuilder('a');
     $qb->where("a.idAnnonce IN(:ids)");
+    $qb->setParameter('ids', array_values($ids_count));
 
-    foreach($params as $param) {
+    foreach($params as $key => $param) {
       $qb->andWhere("a.Value = (:param)");
       $qb->setParameter('param', $param);
     }
-
-    $qb->setParameter('ids', array_values($ids_count));
     $query = $qb->getQuery();
     return $query->execute();
   }

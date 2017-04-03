@@ -97,7 +97,7 @@ class Annonces {
   /**
    * @var string
    *
-   * @ORM\Column(name="extraKeywords", type="string", length=255)
+   * @ORM\Column(name="extraKeywords", type="text")
    */
 
   private $extraKeywords;

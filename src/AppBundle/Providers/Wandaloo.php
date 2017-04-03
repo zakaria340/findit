@@ -144,4 +144,48 @@ Class Wandaloo {
     }
   }
 
+  /**
+   * @param $annonce
+   */
+  public function upextratags($annonce) {
+    $url = $annonce->getUrl();
+    $html = HtmlDomParser::file_get_html($url);
+    $extraKeywords = array();
+    if ($html->find('.breadcrumb a', 2)) {
+      $daextra = array(
+        'label' => 'Marque',
+        'value' => trim($html->find('.breadcrumb a', 2)->plaintext),
+      );
+      array_push($extraKeywords, $daextra);
+    }
+
+    if ($html->find('.breadcrumb a', 3)) {
+      $daextra = array(
+        'label' => 'Modèle',
+        'value' => trim($html->find('.breadcrumb a', 3)->plaintext),
+      );
+      array_push($extraKeywords, $daextra);
+    }
+
+    foreach ($html->find('#sommaire li') as $liinfo) {
+      $dataitem = array(
+        'label' => $liinfo->find('p', 0)->plaintext,
+        'value' => trim($liinfo->find('span', 0)->plaintext),
+      );
+      array_push($extraKeywords, $dataitem);
+    }
+
+    $typeCarburant = $html->find('#sommaire li', 2);
+    array_push($extraKeywords, $typeCarburant->find('span', 0)->plaintext);
+    $datemise = $html->find('#sommaire li', 3);
+    array_push($extraKeywords, $datemise->find('span', 0)->plaintext);
+    $boitevitesse = $html->find('#sommaire li', 6);
+    array_push($extraKeywords, $boitevitesse->find('span', 0)->plaintext);
+
+    $extraKeywords = json_encode($extraKeywords);
+    $annonce->setExtraKeywords($extraKeywords);
+    $this->em->persist($annonce);
+    $this->em->flush();
+  }
+
 }

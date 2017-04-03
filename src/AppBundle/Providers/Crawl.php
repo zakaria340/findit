@@ -77,12 +77,28 @@ Class Crawl {
   public function UpExtraTags() {
     $annonces = $this->em->getRepository('AppBundle:Annonces')->findAll();
     foreach ($annonces as $annonce) {
+      switch ($annonce->getIdSite()) {
+        case 5:
+            $moteur = new Moteur($this->em, $this->sphinx);
+            $moteur->upextratags($annonce);
+          break;
+
+        case 7:
+          $voitureaumaroc = new Voituresaumaroc($this->em, $this->sphinx);
+          $voitureaumaroc->upextratags($annonce);
+          break;
+
+        case 3:
+          $wandaloo = new Wandaloo($this->em, $this->sphinx);
+          $wandaloo->upextratags($annonce);
+          break;
+      }
+
       $extrakeywords = $annonce->getExtraKeywords();
       if (!is_null($extrakeywords)) {
         $tagsExtra = json_decode($extrakeywords, TRUE);
         $this->sphinx->getTagsAnnonces($tagsExtra, $annonce->getIdAnnonces());
       }
-
     }
   }
 }

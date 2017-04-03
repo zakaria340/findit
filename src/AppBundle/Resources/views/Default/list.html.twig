@@ -27,102 +27,112 @@ d'annonces et comparer les prix au Maroc du même article."/>
 {% endblock %}
 {% block body %}
     {% if listTags is not empty %}
-    <div class="full-tabs advanced-filters">
-        <ol class="group advanced-filters-collections collections ">
-            <div class="profile-info-mod">
-                {#       <li class="group singleAnnonce">
-                       <div class="filter-price">
-                           <input type="text" id="price_comparator" name="example_name" value=""/>
-                       </div>
-                           </li>#}
 
-                    {% for listTag in listTags %}
-                        <li class="group">
+        <div class="full-tabs">
+            <ul class="full-tabs-links advanced-filterss">
+                {% for listTag in listTags %}
+                    <li class="more">
+                        <a href="#">
+                            <span class="label">{{ listTag.title }} </span>
+                        </a>
+                        <ul>
+                            {% for listTagchoice in listTag.choices %}
+                                {% set argumentss = arguments|merge(queryparams) %}
+                                {% if (listTag.slug|GenerateSlug) not in argumentss %}
+                                    {% set argumentss = argumentss|merge({ (listTag.slug|GenerateSlug) : listTagchoice.label}) %}
+                                {% endif %}
+                                <li class="listed">
+                                    {% if listTagchoice in queryparams %}
+                                        {% set argumentss = (argumentss|ArrayUnset(listTag.slug|GenerateSlug)) %}
+                                        <a class="active" href="{{ url('list_annonces', argumentss) }}"> <span
+                                                    class="label">{{ listTagchoice.label }}</span>
+                                            <span class="count">{{ listTagchoice.count }}</span>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ url('list_annonces', argumentss) }}"> <span
+                                                    class="label">{{ listTagchoice.label }}</span>
+                                            <span class="count">{{ listTagchoice.count }}</span>
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+
+
+            <h1 class="center title-long">
+                <strong>{{ countAnnonces }} Annonces trouvées</strong>
+                <br/>
+                <div class="current-tags">
+                    {% for key, queryparam in queryparams %}
+                        {% set argumentparams = (queryparams|ArrayUnset(key|GenerateSlug)) %}
+                        <a href="{{ url('list_annonces', argumentparams) }}" class="current-tag"># {{ queryparam }}</a>
+                    {% endfor %}
+                </div>
+            </h1>
+        </div>
+
+    {% endif %}
+    <div id="content" class="group">
+        <div id="main" class="content container main-full">
+            <ol class="group annonces collections ">
+                {% if annonces is not empty %}
+                    {% for annonce in annonces %}
+                        <li class="group singleAnnonce" id="screenshot-{{ annonce.idAnnonces }}">
                             <div class="dribbble">
-                                <h3> {{ listTag.title }} </h3>
-                                <div class="skills">
-                                    {% for listTagchoice in listTag.choices %}
-                                        {% set argumentss = arguments|merge(queryparams) %}
-                                        {% if (listTag.slug|GenerateSlug) not in argumentss %}
-                                            {% set argumentss = argumentss|merge({ (listTag.slug|GenerateSlug) : listTagchoice}) %}
-                                        {% endif %}
-
-                                        {% if listTagchoice in queryparams %}
-                                            {% set argumentss = (argumentss|ArrayUnset(listTag.slug|GenerateSlug)) %}
-                                            <a class="active"
-                                               href="{{ url('list_annonces', argumentss) }}"><strong>#{{ listTagchoice }} <span class="count">( {{ listTag.count }} )</span></strong></a>
-                                        {% else %}
-                                            <a href="{{ url('list_annonces', argumentss) }}">#{{ listTagchoice }} <span class="count">( 5 )</span></a>
-                                        {% endif %}
-
-                                    {% endfor %}
+                                <div class="dribbble-shot">
+                                    <div class="dribbble-img">
+                                        <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                           class="dribbble-link">
+                                            <div data-alt="{{ annonce.title }}" data-picture="">
+                                                <img alt="{{ annonce.title }}"
+                                                     src="{{ asset(annonce.image) }}">
+                                            </div>
+                                        </a>
+                                        <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                           class="dribbble-over">
+                                            <span class="comment">{{ annonce.description[:150] ~ ' ...' }}</span>
+                                            <em class="timestamp"></em>
+                                        </a>
+                                    </div>
+                                    <div class="collection-thumbs">
+                                        <span class="tools-title"> {{ annonce.tags }} / {{ annonce.ville }}</span>
+                                        {% for dataItem in annonce.getExtraAnnonces() %}
+                                            <h3>
+                                                {% if dataItem.label is defined %}
+                                                    <span>{{ dataItem.label }}</span>
+                                                {% endif %}
+                                                {% if dataItem.value is defined %}
+                                                    <span class="meta">{{ dataItem.value }}</span>
+                                                {% endif %}
+                                            </h3>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
+                            <h2 class="attribution hover-card-parent">
+                                <span class="attribution-user">
+                                    <img alt="Site {{ annonce.idSite|SiteInfos.name }}"
+                                         title="Site {{ annonce.idSite|SiteInfos.name }}"
+                                         src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}"
+                                         class="photo logosite">
+                                    <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
+                                       class="url hoverable">{{ annonce.title }}  </a>
+                                </span>
+                                <span class="badge badge-pro">{{ annonce.prix }} DH</span>
+                            </h2>
                         </li>
                     {% endfor %}
-
-            </div>
-        </ol>
-    </div>
-    {% endif %}
-    {% if annonces is not empty %}
-        <h2 class="section">
-            {{ countAnnonces }} Annonces trouvées
-        </h2>
-    {% endif %}
-    <ol class="group annonces collections ">
-        {% if annonces is not empty %}
-            {% for annonce in annonces %}
-                <li class="group singleAnnonce" id="screenshot-{{ annonce.idAnnonces }}">
-                    <div class="dribbble">
-                        <div class="dribbble-shot">
-                            <div class="dribbble-img">
-                                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
-                                   class="dribbble-link">
-                                    <div data-alt="{{ annonce.title }}" data-picture="">
-                                        <img alt="{{ annonce.title }}"
-                                             src="{{ asset(annonce.image) }}">
-                                    </div>
-                                </a>
-                                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
-                                   class="dribbble-over">
-                                    <span class="comment">{{ annonce.description[:150] ~ ' ...' }}</span>
-                                    <em class="timestamp"></em>
-                                </a>
-                            </div>
-                            <div class="collection-thumbs">
-                                <span class="tools-title"> {{ annonce.tags }} / {{ annonce.ville }}</span>
-                                {% for dataItem in annonce.getExtraAnnonces() %}
-                                    <h3>
-                                        {% if dataItem.label is defined %}
-                                            <span>{{ dataItem.label }}</span>
-                                        {% endif %}
-                                        {% if dataItem.value is defined %}
-                                            <span class="meta">{{ dataItem.value }}</span>
-                                        {% endif %}
-                                    </h3>
-                                {% endfor %}
-                            </div>
-                        </div>
+                {% else %}
+                    <div class="null null-message">
+                        <h2>Aucune annonce trouver.</h2>
                     </div>
-                    <h2 class="attribution hover-card-parent">
-            <span class="attribution-user">
-                <img alt="Site {{ annonce.idSite|SiteInfos.name }}" title="Site {{ annonce.idSite|SiteInfos.name }}"
-                     src="{{ asset("logo/" ~ annonce.idSite|SiteInfos.logo) }}" class="photo logosite">
-                <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
-                   class="url hoverable">{{ annonce.title }}  </a>
-            </span>
-                        <span class="badge badge-pro">{{ annonce.prix }} DH</span>
-                    </h2>
-                </li>
-            {% endfor %}
-        {% else %}
-            <div class="null null-message">
-                <h2>Aucune annonce trouver.</h2>
-            </div>
-        {% endif %}
-    </ol>
-
+                {% endif %}
+            </ol>
+        </div>
+    </div>
     <div style="clear: both"></div>
     {% include "AppBundle::pagination.html.twig" %}
 

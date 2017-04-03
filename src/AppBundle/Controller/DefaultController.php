@@ -146,7 +146,7 @@ class DefaultController extends Controller {
       'salles-de-bains',
       'type',
       'annee',
-      'puissance-fiscale'
+      'puissance-fiscale',
     );
 
     $queryparams = $request->query->all();
@@ -188,17 +188,31 @@ class DefaultController extends Controller {
       'paramsRoute' => array('ville' => $ville, 'tags' => $tags, 'keys' => $keys),
     );
 
-    $TagsAnnonces = array();//$em->getRepository('AppBundle:TagsAnnonces')->findAnnonces($ids_count);
+    $TagsAnnonces = $em->getRepository('AppBundle:TagsAnnonces')->findAnnonces($ids_count);
     $listTags = [];
     foreach ($TagsAnnonces as $tagAnnonce) {
-      if (($tags != 'tous' || $keys != '') and in_array($tagAnnonce->getidTags()->getSlug(), $listTagsToDisplayniveau1)) {
+      if (($tags != 'tous' || $keys != '') and in_array(
+          $tagAnnonce->getidTags()->getSlug(), $listTagsToDisplayniveau1
+        )
+      ) {
+
+
         if (!isset($listTags[$tagAnnonce->getidTags()->getSlug()])) {
           $listTags[$tagAnnonce->getidTags()->getSlug()] = array(
-            'title' => $tagAnnonce->getidTags()->getTitle(),
-            'slug'  => $tagAnnonce->getidTags()->getSlug(),
+            'title'   => $tagAnnonce->getidTags()->getTitle(),
+            'slug'    => $tagAnnonce->getidTags()->getSlug(),
+            'choices' => array(),
           );
         }
-        $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()] = $tagAnnonce->getValue();
+        if (!isset($listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()])) {
+          $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()]
+            = array('label' => $tagAnnonce->getValue(), 'count' => 1);
+        }
+        else {
+          $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()]['count']++;
+        }
+
+
       }
     }
     return $this->render(
