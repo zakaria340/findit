@@ -6,3 +6,4 @@ $(document).ready(function() {
   new Masonry('ol.annonces', {
     itemSelector: '.group'
   });
+})
