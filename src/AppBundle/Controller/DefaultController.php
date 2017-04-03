@@ -18,9 +18,9 @@ class DefaultController extends Controller {
     $ip = $this->get_real_ip();
     $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
 
-    $city = 'casablanca';
+    $city = 'tous';
     if ($query && $query['status'] == 'success') {
-      $city = $this->clean($query['city']);
+      //$city = $this->clean($query['city']);
     }
     $searchForm = $this->createForm(SearchForm::class);
 
