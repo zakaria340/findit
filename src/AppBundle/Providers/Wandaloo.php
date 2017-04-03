@@ -103,11 +103,19 @@ Class Wandaloo {
       }
 
       $typeCarburant = $html->find('#sommaire li', 2);
-      array_push($extraKeywords, $typeCarburant->find('span', 0)->plaintext);
+      if($typeCarburant) {
+        array_push($extraKeywords, $typeCarburant->find('span', 0)->plaintext);
+      }
+
       $datemise = $html->find('#sommaire li', 3);
-      array_push($extraKeywords, $datemise->find('span', 0)->plaintext);
+      if($datemise) {
+        array_push($extraKeywords, $datemise->find('span', 0)->plaintext);
+      }
+
       $boitevitesse = $html->find('#sommaire li', 6);
-      array_push($extraKeywords, $boitevitesse->find('span', 0)->plaintext);
+      if($boitevitesse) {
+        array_push($extraKeywords, $boitevitesse->find('span', 0)->plaintext);
+      }
 
       $dataToSave = array(
         'idSphinx'      => $data->getPrefix() . $annonceID,
@@ -176,11 +184,19 @@ Class Wandaloo {
     }
 
     $typeCarburant = $html->find('#sommaire li', 2);
-    array_push($extraKeywords, $typeCarburant->find('span', 0)->plaintext);
+    if($typeCarburant) {
+      array_push($extraKeywords, $typeCarburant->find('span', 0)->plaintext);
+    }
+
     $datemise = $html->find('#sommaire li', 3);
-    array_push($extraKeywords, $datemise->find('span', 0)->plaintext);
+    if($datemise) {
+      array_push($extraKeywords, $datemise->find('span', 0)->plaintext);
+    }
+
     $boitevitesse = $html->find('#sommaire li', 6);
-    array_push($extraKeywords, $boitevitesse->find('span', 0)->plaintext);
+    if($boitevitesse) {
+      array_push($extraKeywords, $boitevitesse->find('span', 0)->plaintext);
+    }
 
     $extraKeywords = json_encode($extraKeywords);
     $annonce->setExtraKeywords($extraKeywords);
