@@ -415,3 +415,11 @@ ol.more-thumbs li {
     font-size: 14px;
     background-color: #eee;
 }
+
+.pagination {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+#footer div.footer-mod {
+    width: 40% !important;
+}

@@ -194,9 +194,7 @@ class DefaultController extends Controller {
       if (($tags != 'tous' || $keys != '') and in_array(
           $tagAnnonce->getidTags()->getSlug(), $listTagsToDisplayniveau1
         )
-      ) {
-
-
+      && trim($tagAnnonce->getValue()) != '') {
         if (!isset($listTags[$tagAnnonce->getidTags()->getSlug()])) {
           $listTags[$tagAnnonce->getidTags()->getSlug()] = array(
             'title'   => $tagAnnonce->getidTags()->getTitle(),
@@ -204,16 +202,17 @@ class DefaultController extends Controller {
             'choices' => array(),
           );
         }
-        if (!isset($listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()])) {
-          $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()]
-            = array('label' => $tagAnnonce->getValue(), 'count' => 1);
+        if (!isset($listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][trim($tagAnnonce->getValue())])) {
+          $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][trim($tagAnnonce->getValue())]
+            = array('label' => trim($tagAnnonce->getValue()), 'count' => 1);
         }
         else {
-          $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][$tagAnnonce->getValue()]['count']++;
+          $listTags[$tagAnnonce->getidTags()->getSlug()]['choices'][trim($tagAnnonce->getValue())]['count']++;
         }
-
-
       }
+    }
+    foreach($listTags as &$tag) {
+      asort($tag['choices']);
     }
     return $this->render(
       'AppBundle:Default:list.html.twig', array(

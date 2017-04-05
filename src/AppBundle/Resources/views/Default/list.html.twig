@@ -60,14 +60,14 @@ d'annonces et comparer les prix au Maroc du même article."/>
                 {% endfor %}
             </ul>
 
-
             <h1 class="center title-long">
                 <strong>{{ countAnnonces }} Annonces trouvées</strong>
                 <br/>
                 <div class="current-tags">
                     {% for key, queryparam in queryparams %}
-                        {% set argumentparams = (queryparams|ArrayUnset(key|GenerateSlug)) %}
-                        <a href="{{ url('list_annonces', argumentparams) }}" class="current-tag"># {{ queryparam }}</a>
+                        {% set argumentsaas = arguments|merge(queryparams) %}
+                        {% set argumentparams = (argumentsaas|ArrayUnset(key|GenerateSlug)) %}
+                        <a href="{{ url('list_annonces', argumentparams) }}" class="current-tag">#{{ listTags[key].title }} <b>{{ queryparam }}</b></a>
                     {% endfor %}
                 </div>
             </h1>
