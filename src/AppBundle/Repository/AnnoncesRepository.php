@@ -73,10 +73,8 @@ class AnnoncesRepository extends \Doctrine\ORM\EntityRepository {
    *
    * @return array|mixed
    */
-  public function RandomAnnonces($ville) {
+  public function RandomAnnonces($tags) {
     $qb = $this->createQueryBuilder('a');
-    $qb->where("a.ville IN(:ville)");
-    $qb->setParameters(array('ville' => $ville));
     $query = $qb->getQuery();
     $query->setMaxResults(20);
     $similiarAnnonces = $query->execute();

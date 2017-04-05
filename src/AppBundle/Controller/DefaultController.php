@@ -36,7 +36,7 @@ class DefaultController extends Controller {
     }
 
     $em = $this->getDoctrine()->getManager();
-    $randomAnnonces = $em->getRepository('AppBundle:Annonces')->RandomAnnonces($city);
+    $randomAnnonces = $em->getRepository('AppBundle:Annonces')->RandomAnnonces(array('voitures', 'appartement', 'villa', 'ordinateurs-portables'));
 
     return $this->render(
       'AppBundle:Default:index.html.twig', array(
