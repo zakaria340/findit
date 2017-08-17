@@ -46,7 +46,7 @@ au maroc dans plusieurs sites d'annonces au Maroc rapidement et comparer les pri
                 <div data-img-src="images/{{ annonce.idSite }}/{{ annonce.image }}"
                      data-screenshot_id="{{ annonce.idAnnonces }}" class="the-shot">
                     <div class="single group">
-                        <img src="{{ asset(annonce.image) }}"
+                        <img alt="{{ annonce.title }}" src="{{ asset('img/blank.gif') }}"  data-echo="{{ asset(annonce.image) | imagine_filter('my_thumb_detail') }}"
                              style="width: 100%; height: 100%">
                     </div>
                 </div>
@@ -85,7 +85,7 @@ au maroc dans plusieurs sites d'annonces au Maroc rapidement et comparer les pri
                                         <a class="url hoverable"
                                            href="{{ path('detail_annonces', {'ville': anno.ville|GenerateSlug, 'idannonce': anno.idAnnonces, 'title': anno.title|GenerateSlug}) }}">
                                             <img class="similar" alt="{{ anno.title }}"
-                                                 src="{{ asset(anno.image) }}">
+                                                 src="{{ asset('img/blank.gif') }}" data-echo="{{ asset(anno.image) | imagine_filter('my_thumb') }}">
                                             <span> {{ anno.title }} </span>
                                         </a>
                                     </li>

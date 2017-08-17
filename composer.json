@@ -29,7 +29,9 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "foolz/sphinxql-query-builder": "^1.1",
-        "sunra/php-simple-html-dom-parser": "^1.5"
+        "sunra/php-simple-html-dom-parser": "^1.5",
+        "symfony/assetic-bundle": "^2.8",
+        "liip/imagine-bundle": "^1.8"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -94,8 +94,7 @@ Cherchi.ma Le 1er moteur de recherche d'annonces au maroc. Rechercher le meilleu
                                         <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
                                            class="dribbble-link">
                                             <div data-alt="{{ annonce.title }}" data-picture="">
-                                                <img alt="{{ annonce.title }}"
-                                                     src="{{ asset(annonce.image) }}">
+                                                <img alt="{{ annonce.title }}" src="{{ asset('img/blank.gif') }}"  data-echo="{{ asset(annonce.image) | imagine_filter('my_thumb') }}">
                                             </div>
                                         </a>
                                         <a href="{{ path('detail_annonces', {'ville': annonce.ville|GenerateSlug, 'idannonce': annonce.idAnnonces, 'title': annonce.title|GenerateSlug}) }}"
