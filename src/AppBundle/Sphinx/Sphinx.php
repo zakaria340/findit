@@ -72,8 +72,8 @@ Class Sphinx {
     $annonce->setExtraKeywords(json_encode($data['extraKeywords']));
     $this->em->persist($annonce);
     $this->em->flush();
-    $idAnnonce = $annonce->getIdAnnonces();
-
+    $idAnnonce = $annonce->getId();
+die('aze');
 
     /*
      * Save extra keywords.

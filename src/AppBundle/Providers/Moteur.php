@@ -136,6 +136,7 @@ Class Moteur {
             $this->sphinx->SaveToSphinx($dataToSave);
           }
         }
+        die('A');
       }
     }
   }

@@ -31,7 +31,8 @@
         "foolz/sphinxql-query-builder": "^1.1",
         "sunra/php-simple-html-dom-parser": "^1.5",
         "symfony/assetic-bundle": "^2.8",
-        "liip/imagine-bundle": "^1.8"
+        "liip/imagine-bundle": "^1.8",
+        "floriansemm/solr-bundle": "v1.6.6.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

@@ -8,12 +8,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Foolz\SphinxQL\SphinxQL;
 use Foolz\SphinxQL\Connection;
+use FS\SolrBundle\Doctrine\Hydration\HydrationModes;
 
 class DefaultController extends Controller {
   /**
    * @Route("/", name="homepage")
    */
   public function indexAction(Request $request) {
+
+
+    $query = $this->get('solr.client')->createQuery('AppBundle:Annonces');
+    $query->addSearchTerm('ville', '*Casablanca*');
+    $mode = HydrationModes::HYDRATE_INDEX;
+    $query->setHydrationMode($mode);
+
+    $result = $query->getResult();
+    var_dump($result);die;
 
     $ip = $this->get_real_ip();
     $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
@@ -133,7 +143,7 @@ class DefaultController extends Controller {
   public function listAction(Request $request, $ville = 'tous', $tags = 'tous', $keys = '') {
     $page = $request->get('page', 1);
     $conn = $this->getSphinxQLConx();
-    $query = SphinxQL::create($conn)->select('*')->from('annonces11');
+    //$query = SphinxQL::create($conn)->select('*')->from('annonces11');
     $listTagsToDisplayniveau1 = array(
       'marque',
       'modele',
@@ -153,25 +163,25 @@ class DefaultController extends Controller {
     if (!is_null($keys) && $keys != '') {
       $keysarray = explode('-', $keys);
       foreach ($keysarray as $a) {
-        $query->match(array('title', 'description', 'tags', 'ville'), $a);
+        //$query->match(array('title', 'description', 'tags', 'ville'), $a);
       }
     }
     if ($ville != 'tous') {
-      $query->match(array('ville'), $ville);
+      //$query->match(array('ville'), $ville);
     }
     if ($tags != 'tous') {
-      $query->match(array('tags'), $tags);
+      //$query->match(array('tags'), $tags);
     }
 
-    $query->limit(100000000);
-    $result = $query->execute();
-    $ids_count = array();
+/*    $query->limit(100000000);
+    $result = $query->execute();*/
+  /*  $ids_count = array();
     foreach ($result as $item) {
       $ids_count[] = $item['id'];
-    }
+    }*/
     $nbArticlesParPage = 25;
     $em = $this->getDoctrine()->getManager();
-
+    $ids_count = [];
     if (!empty($queryparams)) {
       $annoncesfiltred = $em->getRepository('AppBundle:TagsAnnonces')->filterAnnonces($queryparams, $ids_count);
       $ids_count = array();

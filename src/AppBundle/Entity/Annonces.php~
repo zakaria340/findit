@@ -3,16 +3,19 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FS\SolrBundle\Doctrine\Annotation as Solr;
 
 /**
  * Annonces
  *
+ * @Solr\Document()
  * @ORM\Table(name="annonces")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AnnoncesRepository")
  */
 class Annonces {
 
   /**
+   * @Solr\Id
    * @var int
    *
    * @ORM\Column(name="idAnnonces", type="integer")
@@ -31,6 +34,7 @@ class Annonces {
   private $idSite;
 
   /**
+   * @Solr\Field(type="string")
    * @var string
    *
    * @ORM\Column(name="title", type="string", length=255)
@@ -39,6 +43,7 @@ class Annonces {
   private $title;
 
   /**
+   * @Solr\Field(type="text")
    * @var string
    *
    * @ORM\Column(name="description", type="text")
@@ -97,16 +102,10 @@ class Annonces {
   /**
    * @var string
    *
-   * @ORM\Column(name="extraKeywords", type="string", length=255)
+   * @ORM\Column(name="extraKeywords", type="text")
    */
 
   private $extraKeywords;
-
-  /**
-   * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sites")
-   * @ORM\JoinColumn(nullable=false)
-   */
-  private $sites;
 
   /**
    * Get idAnnonces
@@ -343,4 +342,14 @@ class Annonces {
   public function getExtraAnnonces() {
     return json_decode($this->extraKeywords);
   }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->idAnnonces;
+    }
 }

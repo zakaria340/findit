@@ -80,7 +80,15 @@ assetic:
             bin: /usr/bin/uglifycss
 
 
-
+# app/config/config.yml
+fs_solr:
+    endpoints:
+        core0:
+            host: localhost
+            port: 8983
+            path: /solr
+            core: mycollection1
+            timeout: 5
 
 liip_imagine :
     resolvers :
