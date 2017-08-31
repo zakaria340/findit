@@ -73,29 +73,7 @@ Class Sphinx {
     $this->em->persist($annonce);
     $this->em->flush();
     $idAnnonce = $annonce->getId();
-die('aze');
 
-    /*
-     * Save extra keywords.
-     */
-    $this->getTagsAnnonces($data['extraKeywords'], $idAnnonce);
-
-    /**
-     * Sphinx Insert
-     */
-    $sq = SphinxQL::create($this->conxSphinx)->insert()->into($this->tableSphinx);
-
-    $sphinxData = array(
-      'id'            => $idAnnonce,
-      'title'         => $data['title'],
-      'description'   => $data['description'],
-      'tags'          => implode(', ', $data['tags']),
-      'extrakeywords' => json_encode($rawExtraKeywords),
-      'idsite'        => $data['idSite'],
-      'ville'         => $ville,
-      'date'          => $data['date'],
-    );
-    $sq->set($sphinxData)->execute();
   }
 
   /**

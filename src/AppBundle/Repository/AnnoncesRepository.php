@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class AnnoncesRepository extends \Doctrine\ORM\EntityRepository {
 
-  public function findAllPagineEtTrie($page, $nbMaxParPage, $ids_count) {
+  public function findAllPagineEtTrie($page, $nbMaxParPage, $ville, $tags, $keys) {
 
     if (!is_numeric($page)) {
       throw new InvalidArgumentException(

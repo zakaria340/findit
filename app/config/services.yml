@@ -24,3 +24,8 @@ services:
         class: AppBundle\Sphinx\Sphinx
         arguments:
                 ["@doctrine.orm.entity_manager", '%kernel.root_dir%']
+
+    appbundle.annonces_manager:
+        class: AppBundle\Services\AnnoncesManager
+        arguments:
+                ["@doctrine.orm.entity_manager", "@solr.client"]
